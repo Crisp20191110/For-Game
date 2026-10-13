@@ -1,6 +1,7 @@
 // Cache the complete app shell as one version: offline mode never mixes modules from different releases.
-const CACHE = 'one-leaf-v3';
-const FILES = ['/', '/index.html', '/src/squad-app.js', '/src/squad.js', '/src/heroes.js', '/src/style.css', '/src/cards.css', '/public/landscape.svg', '/public/icon.svg', '/public/icon-192.png', '/public/icon-512.png', '/manifest.webmanifest'];
+const CACHE = 'one-leaf-v4';
+const BASE = new URL('./', self.location.href);
+const FILES = ['./', 'index.html', 'public/game.js?v=4.0.0', 'public/game.css?v=4.0.0', 'public/heroes-atlas.png', 'public/landscape.svg', 'public/icon.svg', 'public/icon-192.png', 'public/icon-512.png', 'manifest.webmanifest'].map(file => new URL(file, BASE).href);
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES.map(url => new Request(url, { cache: 'reload' })))));
 });
@@ -14,6 +15,6 @@ self.addEventListener('fetch', event => {
     const cached = await cache.match(event.request, { ignoreSearch: true });
     if (cached) return cached;
     try { return await fetch(event.request); }
-    catch { return event.request.mode === 'navigate' ? await cache.match('/') : Response.error(); }
+    catch { return event.request.mode === 'navigate' ? await cache.match(BASE.href) : Response.error(); }
   }));
 });

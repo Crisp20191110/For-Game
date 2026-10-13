@@ -23,8 +23,27 @@ export const HEROES = [
   { id:'yue', name:'月见璃', title:'广寒神女', rarity:'SSR', role:'healer', faction:'moon', mark:'月', skill:'春回万物', lore:'月光所及，皆是她的归人。' },
   { id:'huang', name:'凤九离', title:'九霄炎君', rarity:'SSR', role:'mage', faction:'wild', mark:'凤', skill:'离火焚阵', lore:'九霄浴火，焚尽旧日尘埃。' },
   { id:'ming', name:'墨归冥', title:'幽冥剑隐', rarity:'SSR', role:'assassin', faction:'moon', mark:'冥', skill:'渡影追魂', lore:'向死而生，于影中求道。' },
-  { id:'tai', name:'太初子', title:'天机道祖', rarity:'SSR', role:'mage', faction:'cloud', mark:'初', skill:'离火焚阵', lore:'观万物始终，问天地本心。' }
+  { id:'tai', name:'太初子', title:'天机道祖', rarity:'SSR', role:'mage', faction:'cloud', mark:'初', skill:'离火焚阵', lore:'观万物始终，问天地本心。' },
+  { id:'heling', name:'鹤灵童', title:'青羽剑童', rarity:'R', role:'blade', faction:'cloud', mark:'鹤', skill:'青羽剑诀', lore:'踏云听松，青羽携春归。' },
+  { id:'guichuan', name:'归川', title:'河岳灵卫', rarity:'R', role:'guard', faction:'wild', mark:'川', skill:'玄甲护潮', lore:'万川入海，寸土不失。' },
+  { id:'xinglin', name:'杏林姝', title:'杏雨药师', rarity:'R', role:'healer', faction:'moon', mark:'杏', skill:'杏雨回春', lore:'一簇杏花，医尽人间春寒。' },
+  { id:'deng', name:'灯不灭', title:'司灯小仙', rarity:'R', role:'mage', faction:'cloud', mark:'灯', skill:'灯火映天', lore:'长夜未央，灯火长明。' },
+  { id:'qiaoying', name:'绮影', title:'夜蝶使', rarity:'R', role:'assassin', faction:'moon', mark:'蝶', skill:'夜蝶逐影', lore:'梦入千家，不惊一叶。' },
+  { id:'yufeng', name:'御风音', title:'山笛仙子', rarity:'R', role:'mage', faction:'wild', mark:'笛', skill:'山风入弦', lore:'青笛一曲，万壑听风。' },
+  { id:'baihu', name:'白霆', title:'白虎镇将', rarity:'SR', role:'blade', faction:'wild', mark:'虎', skill:'白虎破阵', lore:'银甲映雪，战意如雷。' },
+  { id:'yunlu', name:'云鹿卿', title:'流云天卫', rarity:'SR', role:'guard', faction:'cloud', mark:'云', skill:'流云天障', lore:'以流云为盾，护千里晴空。' },
+  { id:'luyin', name:'鹿饮溪', title:'灵鹿山医', rarity:'SR', role:'healer', faction:'wild', mark:'鹿', skill:'溪灵回响', lore:'鹿鸣春涧，灵息满山。' },
+  { id:'moqiu', name:'墨千秋', title:'丹青道师', rarity:'SR', role:'mage', faction:'cloud', mark:'墨', skill:'丹青万象', lore:'一卷藏山海，一笔定乾坤。' },
+  { id:'hanzhao', name:'寒照', title:'盲月剑隐', rarity:'SR', role:'assassin', faction:'moon', mark:'寒', skill:'无月追魂', lore:'不以目视，以心照夜。' },
+  { id:'xueyu', name:'雪羽姬', title:'霜羽仙君', rarity:'SR', role:'healer', faction:'moon', mark:'羽', skill:'霜羽净心', lore:'雪落无声，羽翼有归。' },
+  { id:'nezha', name:'哪吒', title:'莲焰三太子', rarity:'SSR', role:'blade', faction:'wild', mark:'莲', skill:'莲焰破天', lore:'莲生烈火，少年不畏天高。' },
+  { id:'yangjian', name:'杨戬', title:'清源真君', rarity:'SSR', role:'guard', faction:'cloud', mark:'目', skill:'天眼镇邪', lore:'天眼照幽，银甲护苍生。' },
+  { id:'aoli', name:'敖璃', title:'沧海龙女', rarity:'SSR', role:'healer', faction:'moon', mark:'澜', skill:'沧海归潮', lore:'沧海为歌，潮生万物。' },
+  { id:'yaochi', name:'瑶池金母', title:'西华圣母', rarity:'SSR', role:'healer', faction:'cloud', mark:'瑶', skill:'瑶池长生', lore:'金阙流光，万仙来朝。' },
+  { id:'doumu', name:'斗姆元君', title:'紫微星母', rarity:'SSR', role:'mage', faction:'moon', mark:'斗', skill:'紫微星落', lore:'群星绕袖，万象归心。' },
+  { id:'wukong', name:'孙悟空', title:'齐天大圣', rarity:'SSR', role:'assassin', faction:'wild', mark:'齐', skill:'踏碎凌霄', lore:'金箍凌云，不负齐天之名。' }
 ];
+HEROES.forEach((hero, index) => { hero.art = index; });
 export const HERO_BY_ID = Object.fromEntries(HEROES.map(h => [h.id, h]));
 const BASE = {
   guard:{hp:650,atk:48,def:38,speed:65}, blade:{hp:420,atk:85,def:20,speed:92},

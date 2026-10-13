@@ -12,7 +12,7 @@ http.createServer(async (req, res) => {
     const pathname = decodeURIComponent(url.pathname);
     const relative = pathname === '/' ? 'index.html' : pathname.slice(1);
     // Serve only public application files, never repository metadata or tests.
-    if (!['index.html', 'sw.js', 'manifest.webmanifest'].includes(relative) && !/^(src|public)\/[\w./-]+$/.test(relative)) {
+    if (!['index.html', 'play.html', 'sw.js', 'manifest.webmanifest'].includes(relative) && !/^(src|public)\/[\w./-]+$/.test(relative)) {
       res.writeHead(404).end('Not found'); return;
     }
     const file = path.resolve(root, relative);
