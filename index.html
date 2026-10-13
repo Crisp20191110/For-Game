@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#142d2a">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="一树一世界，一叶一修行。原创轻量修仙小游戏。">
+  <title>一叶问仙 · 山中有清欢</title>
+  <link rel="icon" href="/public/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="/public/icon-192.png">
+  <link rel="manifest" href="/manifest.webmanifest">
+  <link rel="stylesheet" href="/src/style.css">
+</head>
+<body>
+  <div class="shell">
+    <aside class="desktop-note"><div class="seal">一叶</div><h1>山中无甲子<br>一叶问长生</h1><p>放下片刻尘嚣，来此间修行。</p><span>一叶问仙 / ONE LEAF IMMORTAL</span></aside>
+    <main class="game">
+      <header class="topbar"><a class="brand" href="/">一叶问仙<small>山中有清欢</small></a><button class="icon-button" id="settings" aria-label="打开设置">☰</button></header>
+      <section class="profile"><div class="avatar">仙</div><div class="identity"><h2>山中散人 <span id="realm">凡尘初醒</span></h2><p>道心自在 · 万物皆有缘</p></div><div class="power"><small>战力</small><strong id="power">108</strong></div></section>
+      <section class="resources"><div><span class="resource-icon gold">◈</span><span>灵石 <b id="coins">80</b></span></div><div><span class="resource-icon jade">❧</span><span>灵露 <b id="fruit">30</b><small>/ 50</small></span><small id="regen">每 30 秒 +1</small></div></section>
+      <div id="page"></div>
+      <nav class="bottom-nav" aria-label="游戏导航">
+        <button data-tab="home" class="active"><span>♧</span>洞天</button>
+        <button data-tab="adventure"><span>⚔</span>历练</button>
+        <button data-tab="character"><span>♙</span>修行</button>
+        <button data-tab="quests"><span>☷</span>仙缘<i id="quest-dot" hidden></i></button>
+      </nav>
+    </main>
+  </div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <dialog id="modal"><div id="modal-body"></div></dialog>
+  <input type="file" id="import-file" accept="application/json,.json" hidden>
+  <script type="module" src="/src/app.js"></script>
+</body>
+</html>
