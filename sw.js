@@ -1,6 +1,6 @@
-// Cache the complete app shell as one version: offline mode never mixes v1 and v2 modules.
-const CACHE = 'one-leaf-v2';
-const FILES = ['/', '/index.html', '/src/app.js', '/src/game.js', '/src/style.css', '/public/landscape.svg', '/public/icon.svg', '/public/icon-192.png', '/public/icon-512.png', '/manifest.webmanifest'];
+// Cache the complete app shell as one version: offline mode never mixes modules from different releases.
+const CACHE = 'one-leaf-v3';
+const FILES = ['/', '/index.html', '/src/squad-app.js', '/src/squad.js', '/src/heroes.js', '/src/style.css', '/src/cards.css', '/public/landscape.svg', '/public/icon.svg', '/public/icon-192.png', '/public/icon-512.png', '/manifest.webmanifest'];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES.map(url => new Request(url, { cache: 'reload' })))));
 });

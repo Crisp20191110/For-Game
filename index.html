@@ -6,33 +6,34 @@
   <meta name="theme-color" content="#142d2a">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-  <meta name="description" content="一树一世界，一叶一修行。原创轻量修仙小游戏。">
-  <title>一叶问仙 · 山中有清欢</title>
+  <meta name="description" content="招募群仙，五人结阵。原创仙侠抽卡与机器人队伍 PK。">
+  <title>一叶问仙 · 群仙结阵</title>
   <link rel="icon" href="/public/icon.svg" type="image/svg+xml">
   <link rel="apple-touch-icon" href="/public/icon-192.png">
   <link rel="manifest" href="/manifest.webmanifest">
   <link rel="stylesheet" href="/src/style.css">
+  <link rel="stylesheet" href="/src/cards.css">
 </head>
 <body>
   <div class="shell">
     <aside class="desktop-note"><div class="seal">一叶</div><h1>山中无甲子<br>一叶问长生</h1><p>放下片刻尘嚣，来此间修行。</p><span>一叶问仙 / ONE LEAF IMMORTAL</span></aside>
     <main class="game">
-      <header class="topbar"><a class="brand" href="/">一叶问仙<small>山中有清欢</small></a><button class="icon-button" id="settings" aria-label="打开设置">☰</button></header>
-      <section class="profile"><div class="avatar">仙</div><div class="identity"><h2>山中散人 <span id="realm">凡尘初醒</span></h2><p>道心自在 · 万物皆有缘</p></div><div class="power"><small>战力</small><strong id="power">108</strong></div></section>
-      <section class="resources"><div><span class="resource-icon gold">◈</span><span>灵石 <b id="coins">∞</b></span></div><div><span class="resource-icon jade">❧</span><span>灵露 <b id="fruit">∞</b></span><small id="regen">全部资源无限</small></div></section>
+      <header class="topbar"><a class="brand" href="/">一叶问仙<small>群仙结阵</small></a><button class="icon-button" id="settings" aria-label="打开设置">☰</button></header>
+      <section class="profile"><div class="avatar">仙</div><div class="identity"><h2>青岚仙盟 <span id="realm">5/18 英雄</span></h2><p>五人结阵 · 共赴山海</p></div><div class="power"><small>战力</small><strong id="power">108</strong></div></section>
+      <section class="resources"><div><span class="resource-icon gold">◈</span><span>灵玉 <b id="coins">∞</b></span></div><div><span class="resource-icon jade">❧</span><span>招募券 <b id="fruit">∞</b></span><small id="regen">无限招募 · 无充值</small></div></section>
       <div id="page"></div>
       <nav class="bottom-nav" aria-label="游戏导航">
-        <button data-tab="home" class="active"><span>♧</span>洞天</button>
-        <button data-tab="adventure"><span>⚔</span>历练</button>
-        <button data-tab="character"><span>♙</span>修行</button>
-        <button data-tab="arena"><span>♜</span>仙榜</button>
-        <button data-tab="events"><span>☷</span>活动<i id="quest-dot" hidden></i></button>
+        <button data-tab="summon" class="active"><span>✦</span>召唤</button>
+        <button data-tab="heroes"><span>♙</span>英雄</button>
+        <button data-tab="team"><span>❖</span>布阵</button>
+        <button data-tab="arena"><span>⚔</span>争锋</button>
+        <button data-tab="journey"><span>♧</span>历练<i id="quest-dot" hidden></i></button>
       </nav>
     </main>
   </div>
   <div id="toast" role="status" aria-live="polite"></div>
   <dialog id="modal"><div id="modal-body"></div></dialog>
   <input type="file" id="import-file" accept="application/json,.json" hidden>
-  <script type="module" src="/src/app.js"></script>
+  <script type="module" src="/src/squad-app.js"></script>
 </body>
 </html>
