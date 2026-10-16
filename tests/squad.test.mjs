@@ -4,8 +4,8 @@ import {HEROES,HERO_BY_ID,heroStats,validateTeam,teamPower,synergy,teamBattle,se
 import {fresh,draw,train,ascend,setSlot,levelLimit,STARTERS,botSquads,leaderboard,startBattle,settle,claim,syncTime,restore} from '../src/squad.js';
 const NOW=Date.parse('2026-10-13T12:00:00+08:00');
 function squad(team,level=1){return{team,roster:Object.fromEntries(team.map(id=>[id,{level,star:0,copies:1}]))};}
-test('36位仙侠英雄，三个稀有度五种职业，新号已可五人出战',()=>{
- assert.equal(HEROES.length,36);assert.equal(new Set(HEROES.map(h=>h.id)).size,36);assert.equal(new Set(HEROES.map(h=>h.role)).size,5);
+test('72位仙侠英雄，四个稀有度五种职业，新号已可五人出战',()=>{
+ assert.equal(HEROES.length,72);assert.equal(new Set(HEROES.map(h=>h.id)).size,72);assert.equal(new Set(HEROES.map(h=>h.role)).size,5);
  const s=fresh(NOW);assert.equal(s.team.length,5);assert.equal(new Set(s.team).size,5);assert.ok(teamPower(s.team,s.roster)>0);assert.equal(s.unlimited,true);
 });
 test('单抽与十连的累计保底，SSR重置两种保底且不消耗资源',()=>{
@@ -18,12 +18,12 @@ test('单抽与十连的累计保底，SSR重置两种保底且不消耗资源',
 test('跨十连保底、重复英雄与上次结果正确保存',()=>{
  const s=fresh(NOW);s.pools.standard.pity=45;const result=draw(s,10,()=>.99);
  assert.equal(HERO_BY_ID[result.results[4].id].rarity,'SSR');assert.equal(s.pity,5);assert.equal(s.lastDraw.length,10);
- assert.ok(s.roster.yufeng.copies>1);assert.equal(s.daily.draws,10);
+ assert.ok(s.roster.zao_shen.copies>1);assert.equal(s.daily.draws,10);
  const copy=restore(JSON.stringify(s),NOW);assert.deepEqual(copy,s);
 });
 test('招募随机种子覆盖卡池，保底不会破坏合法英雄与唯一阵容',()=>{
  const s=fresh(NOW),random=seededRandom(92);for(let i=0;i<200;i++)draw(s,10,random);
- assert.equal(Object.keys(s.roster).length,36);assert.deepEqual(s.team,STARTERS);assert.ok(s.pity<50);assert.ok(s.guarantee<10);
+ assert.equal(Object.keys(s.roster).length,72);assert.deepEqual(s.team,STARTERS);assert.ok(s.pity<50);assert.ok(s.guarantee<10);
 });
 test('培养无限材料、关卡解锁上限，觉醒取累计同名招募而不扣卡',()=>{
  const s=fresh(NOW);assert.equal(train(s,'qing',true).level,20);assert.ok(train(s,'qing',true).error);
@@ -36,7 +36,7 @@ test('五人不可重复，换已有英雄交换阵位，未拥有者不能入�
  const s=fresh(NOW);assert.equal(setSlot(s,0,'ling').swapped,true);assert.equal(s.team[3],'shi');assert.equal(s.team[0],'ling');
  assert.ok(setSlot(s,0,'chen').error);assert.ok(setSlot(s,5,'qing').error);
  assert.throws(()=>validateTeam(['qing','qing','yan','ling','ye']));assert.throws(()=>validateTeam(['qing']));
- draw(s,1,()=>0);assert.ok(s.roster.chen);assert.equal(setSlot(s,0,'chen').swapped,false);assert.equal(new Set(s.team).size,5);
+ let rolls=[0,.9,0];draw(s,1,()=>rolls.shift());assert.ok(s.roster.chen);assert.equal(setSlot(s,0,'chen').swapped,false);assert.equal(new Set(s.team).size,5);
 });
 test('三人及五人同阵营羁绊、等级与星级都改变真实属性',()=>{
  assert.equal(synergy(STARTERS).bonus,0);assert.equal(synergy(['yuan','qing','yan','ling','ye']).bonus,.08);
@@ -110,4 +110,4 @@ test('六池独立保底、阵营限定、UP歪后必出与新手上限',()=>{
  const restored=restore(JSON.stringify(s),NOW);assert.equal(restored.pools.featured.featuredNext,true);restored.pools.featured.pity=49;assert.equal(draw(restored,1,()=>.99,'featured').results[0].id,'nezha');assert.equal(restored.pools.featured.featuredNext,false);
  assert.equal(HERO_BY_ID[draw(s,10,()=>.99,'beginner').results[9].id].rarity,'SSR');draw(s,10,()=>.99,'beginner');assert.ok(draw(s,1,()=>.99,'beginner').error);assert.equal(s.pools.beginner.draws,20);
 });
-test('v3卡池迁移保留原有英雄、阵容和累计保底',()=>{const old=fresh(NOW);old.version=3;delete old.pools;delete old.activePool;old.pity=42;old.guarantee=2;old.draws=52;const s=restore(JSON.stringify(old),NOW);assert.equal(s.version,4);assert.equal(s.pools.standard.pity,42);assert.equal(s.pools.standard.draws,52);assert.deepEqual(s.team,old.team);assert.deepEqual(s.roster,old.roster);});
+test('v3卡池迁移保留原有英雄、阵容和累计保底',()=>{const old=fresh(NOW);old.version=3;delete old.pools;delete old.activePool;old.pity=42;old.guarantee=2;old.draws=52;const s=restore(JSON.stringify(old),NOW);assert.equal(s.version,5);assert.equal(s.pools.standard.pity,42);assert.equal(s.pools.standard.draws,52);assert.deepEqual(s.team,old.team);assert.deepEqual(s.roster,old.roster);});
