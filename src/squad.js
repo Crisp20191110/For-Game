@@ -38,7 +38,7 @@ function weekly(week,baseLevel){return{week,tower:0,claimed:[],baseLevel};}
 function arena(week,anchor=1){return{week,rating:1000,matches:0,wins:0,recent:[],anchor,bots:BOTS.map(b=>({id:b.id,rating:1000+b.offset}))};}
 export function fresh(now=Date.now()){
  const p=periods(now);
- return{version:6,armory:freshArmory(),tower:0,wishlist:null,destiny:0,estate:freshEstate(now),savedAt:now,activePool:'standard',pools:Object.fromEntries(Object.keys(POOLS).map(id=>[id,poolState()])),unlimited:true,roster:Object.fromEntries(STARTERS.map(id=>[id,{level:1,star:0,copies:1}])),team:[...STARTERS],draws:0,pity:0,guarantee:0,stage:1,wins:0,renown:0,seq:0,claimed:[],lastPool:'standard',lastDraw:[],daily:daily(p.day),weekly:weekly(p.week,1),arena:arena(p.week),lastSeason:null,lastSeen:now,legacy:null};
+ return{version:7,armory:freshArmory(),tower:0,wishlist:null,destiny:0,estate:freshEstate(now),savedAt:now,activePool:'standard',pools:Object.fromEntries(Object.keys(POOLS).map(id=>[id,poolState()])),unlimited:true,roster:Object.fromEntries(STARTERS.map(id=>[id,{level:1,star:0,copies:1}])),team:[...STARTERS],draws:0,pity:0,guarantee:0,stage:1,wins:0,renown:0,seq:0,claimed:[],lastPool:'standard',lastDraw:[],daily:daily(p.day),weekly:weekly(p.week,1),arena:arena(p.week),lastSeason:null,lastSeen:now,legacy:null};
 }
 export function levelLimit(s){return Math.min(100,20+Math.floor((s.stage-1)/5)*5);}
 export function draw(s,amount=1,random=Math.random,poolId=s.activePool){
@@ -146,7 +146,7 @@ export function migrateLegacy(d,now=Date.now()){
 export function restore(raw,now=Date.now()){
  const d=typeof raw==='string'?JSON.parse(raw):raw;
  if([1,2].includes(d?.version))return migrateLegacy(d,now);
- if(!d||![3,4,5,6].includes(d.version))throw new Error('存档版本无效');
+ if(!d||![3,4,5,6,7].includes(d.version))throw new Error('存档版本无效');
  const n=(value,max=1e12,min=0)=>{if(!Number.isSafeInteger(value)||value<min||value>max)throw new Error('存档数值无效');return value;};
  const list=(v,allowed)=>{if(!Array.isArray(v))throw new Error('存档列表无效');return[...new Set(v.filter(x=>allowed.includes(x)))];};
  const s=fresh(now);s.roster={};
@@ -180,7 +180,7 @@ export function restore(raw,now=Date.now()){
   if(!['sword','bell','mirror'].includes(e.equipped))throw new Error('法宝无效');s.estate.equipped=e.equipped;
   if(e.expedition){s.estate.expedition={endsAt:n(e.expedition.endsAt,1e15),team:validateTeam(e.expedition.team),reward:n(e.expedition.reward,160,70)};}
  }
- if(d.version>=6){s.armory=restoreArmory(d.armory,s.roster);s.tower=n(d.tower);s.destiny=n(d.destiny);if(d.wishlist!==null&&!Object.hasOwn(HERO_BY_ID,d.wishlist))throw Error('心愿英雄无效');s.wishlist=d.wishlist;}else{s.tower=d.weekly?.tower||0;}
+ if(d.version>=6){s.armory=restoreArmory(d.armory,s.roster,{legacy:d.version<7});s.tower=n(d.tower);s.destiny=n(d.destiny);if(d.wishlist!==null&&!Object.hasOwn(HERO_BY_ID,d.wishlist))throw Error('心愿英雄无效');s.wishlist=d.wishlist;}else{s.tower=d.weekly?.tower||0;}
  s.savedAt=Number.isSafeInteger(d.savedAt)?d.savedAt:0;
  s.lastSeen=Number.isFinite(d.lastSeen)?Math.min(now,Math.max(0,d.lastSeen)):now;syncTime(s,now);return s;
 }
