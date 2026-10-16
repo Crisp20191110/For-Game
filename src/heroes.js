@@ -1,3 +1,4 @@
+import {makePathReactions} from './paths.js';
 import {TECHNIQUES,describeOps} from './techniques.js';
 import {gearBonus,gearOperations,EFFECTS} from './relic-pool.js';
 import {estateBonus} from './estate.js';
@@ -1008,7 +1009,7 @@ export function teamBattle(left,right,{seed=1,normalized=false,maxRounds=30}={})
     const extra=estateBonus(source.estate),gear=gearBonus(source.armory,id);for(const k of ['hp','atk','def'])st[k]=Math.round(st[k]*(1+bond.stats[k]+extra[k]+gear[k]));st.healing=bond.stats.healing;st.crit=bond.stats.crit;
     return {id,side,slot,...st,maxHp:st.hp,shield:0,energy:0,taunt:0,burn:0,mark:0,regen:0,weaken:0,armorBreak:0,gearOps:gearOperations(source.armory,id),effects:[...new Set([heroEffect(id),...gear.effects])],star:source.roster[id].star,role:HERO_BY_ID[id].role};
   });}
-  const a=create('left',left),b=create('right',right),all=[...a,...b];
+  const a=create('left',left),b=create('right',right),all=[...a,...b],reactions=makePathReactions(left,right,all);
   const living=xs=>xs.filter(x=>x.hp>0);
   const snapshot=()=>all.map(x=>({id:x.id,side:x.side,hp:x.hp,maxHp:x.maxHp,shield:x.shield,energy:x.energy,burn:x.burn,mark:x.mark,regen:x.regen,weaken:x.weaken,armorBreak:x.armorBreak}));
   const initial=snapshot();
@@ -1029,7 +1030,7 @@ export function teamBattle(left,right,{seed=1,normalized=false,maxRounds=30}={})
         let amount=Math.max(1,Math.round(actor.atk*multi-target.def*(target.armorBreak>0?.7:1)*(pierce?.5:1)))*(crit?1.5:1);
         amount=Math.round(amount);const absorbed=Math.min(target.shield,amount);target.shield-=absorbed;
         const actual=Math.min(target.hp,amount-absorbed);target.hp-=actual;
-        actions.push({target:target.id,side:target.side,type:'damage',amount:actual,absorbed,crit});
+        actions.push({target:target.id,side:target.side,type:'damage',amount:actual,absorbed,crit,exposed:target.mark>0||target.armorBreak>0});
       }
       function heal(target,multi){const amount=Math.min(target.maxHp-target.hp,Math.round(actor.atk*multi*(1+actor.healing)));target.hp+=amount;if(special)target.burn=0;actions.push({target:target.id,side:target.side,type:'heal',amount});}
       const taunter=foes.find(x=>x.taunt>0);
@@ -1038,7 +1039,7 @@ export function teamBattle(left,right,{seed=1,normalized=false,maxRounds=30}={})
       function targets(which){const friends=living(actor.side==='left'?a:b),enemies=living(actor.side==='left'?b:a);const group=(xs,predicate)=>xs.filter(predicate);const front=group(enemies,x=>x.slot<2),back=group(enemies,x=>x.slot>=2);return ({self:actor.hp>0?[actor]:[],allies:friends,enemies,frontAllies:group(friends,x=>x.slot<2),backAllies:group(friends,x=>x.slot>=2),weakAlly:[weakest(friends)],weak:[weakest(enemies)],front:[weakest(front.length?front:enemies)],back:[weakest(back.length?back:enemies)]})[which].filter(Boolean);}
       function runOps(ops,scale=1,source='绝技'){
         for(const op of ops){let selected=targets(op.target);if(op.type==='damage'&&['weak','front','back'].includes(op.target)){const tank=living(actor.side==='left'?b:a).find(x=>x.taunt>0);if(tank){selected=[tank];tank.taunt--;}}
-          for(const target of selected){const actionStart=actions.length,value=op.value*scale;
+          for(const target of selected){const actionStart=actions.length,value=op.value*scale,oldEnergy=target.energy;
             if(op.type==='damage')damage(target,value,op.pierce);
             else if(op.type==='heal')heal(target,value);
             else if(op.type==='shield'){const amount=Math.min(Math.round(actor.atk*value),Math.max(0,Math.round(target.maxHp*.6)-target.shield));target.shield+=amount;actions.push({target:target.id,side:target.side,type:'shield',amount,source});}
@@ -1047,7 +1048,7 @@ export function teamBattle(left,right,{seed=1,normalized=false,maxRounds=30}={})
               else if(op.type==='energy')target.energy=Math.min(2,target.energy+op.value);
               else if(op.type==='drain')target.energy=Math.max(0,target.energy-op.value);
               else target[op.type]=Math.max(target[op.type]||0,op.value);
-              actions.push({target:target.id,side:target.side,type:'status',status:op.type,amount:op.value,source});
+              actions.push({target:target.id,side:target.side,type:'status',status:op.type,amount:op.value,source,gain:op.type==='energy'?target.energy-oldEnergy:0});
             }
             for(const action of actions.slice(actionStart)){action.source=source;action.operation=op.type;}
           }
@@ -1059,10 +1060,10 @@ export function teamBattle(left,right,{seed=1,normalized=false,maxRounds=30}={})
       if(special){
         const hitIds=actions.filter(x=>x.type==='damage').map(x=>x.target);
         for(const effect of actor.effects){
-          if(effect==='burn'||effect==='mark')for(const target of foes.filter(x=>x.hp>0&&hitIds.includes(x.id)))target[effect]=2;
-          if(effect==='focus')actor.energy=1;
+          if(effect==='burn'||effect==='mark')for(const target of foes.filter(x=>x.hp>0&&hitIds.includes(x.id))){target[effect]=Math.max(target[effect],2);actions.push({type:'status',status:effect,target:target.id,side:target.side,amount:2,source:EFFECTS[effect].name});}
+          if(effect==='focus'){const before=actor.energy;actor.energy=Math.max(actor.energy,1);actions.push({type:'status',status:'energy',target:actor.id,side:actor.side,amount:1,gain:actor.energy-before,source:'聚灵'});}
           if(effect==='cleanse')runOps([{type:'cleanse',target:'allies',value:0}],1,'涤尘');
-          if(effect==='rally')for(const target of allies)if(target!==actor)target.energy=Math.min(2,target.energy+1);
+          if(effect==='rally')for(const target of allies)if(target!==actor){const before=target.energy;target.energy=Math.min(2,target.energy+1);actions.push({type:'status',status:'energy',target:target.id,side:target.side,amount:1,gain:target.energy-before,source:'启灵'});}
           if(effect==='leech')heal(actor,1);
           if(effect==='chain')for(const target of living(foes))damage(target,.25);
           if(effect==='shatter')for(const target of living(foes).filter(x=>hitIds.includes(x.id))){const amount=Math.min(target.shield,Math.round(actor.atk*.6));target.shield-=amount;actions.push({target:target.id,side:target.side,type:'break',amount});}
@@ -1075,12 +1076,13 @@ export function teamBattle(left,right,{seed=1,normalized=false,maxRounds=30}={})
       if(actor.weaken>0)actor.weaken--;if(actor.armorBreak>0)actor.armorBreak--;
       if(actor.burn>0){const amount=Math.min(actor.hp,Math.round(actor.maxHp*.04));actor.hp-=amount;actor.burn--;actions.push({target:actor.id,side:actor.side,type:'burn',amount});}
       if(actor.mark>0)actor.mark--;
-      events.push({round,actor:actor.id,side:actor.side,special,skill:special?HERO_BY_ID[actor.id].skill+' · '+actor.effects.map(e=>EFFECTS[e].name).join(' / '):actor.role==='healer'?'灵息回春':'普通攻击',actions,units:snapshot()});
+      const reaction=reactions.process(actor,[...actions],round);actions.push(...reaction.actions);
+      events.push({chains:reaction.chains,round,actor:actor.id,side:actor.side,special,skill:special?HERO_BY_ID[actor.id].skill+' · '+actor.effects.map(e=>EFFECTS[e].name).join(' / '):actor.role==='healer'?'灵息回春':'普通攻击',actions,units:snapshot()});
     }
   }
   const leftAlive=living(a).length,rightAlive=living(b).length;
   // Survivors and then total remaining HP percentage decide a round-cap result.
   const leftHp=a.reduce((sum,x)=>sum+x.hp/x.maxHp,0),rightHp=b.reduce((sum,x)=>sum+x.hp/x.maxHp,0);
   const score=leftAlive-rightAlive||leftHp-rightHp;
-  return {winner:Math.abs(score)<1e-8?'draw':score>0?'left':'right',rounds,initial,events,leftAlive,rightAlive};
+  return {pathSummary:reactions.summary(),winner:Math.abs(score)<1e-8?'draw':score>0?'left':'right',rounds,initial,events,leftAlive,rightAlive};
 }
