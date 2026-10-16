@@ -68,7 +68,7 @@ test('同阵容同等级对战没有固定先手必胜，强队能击败弱队',
  assert.equal(teamBattle(squad(STARTERS,20),squad(STARTERS,1),{seed:33}).winner,'left');
 });
 test('机器人有完整五人阵容，刷新稳定；培养后逐步追赶，连败减压',()=>{
- const s=fresh(NOW);assert.equal(botSquads(s).length,8);assert.equal(leaderboard(s).length,9);
+ const s=fresh(NOW);assert.equal(botSquads(s).length,24);assert.equal(leaderboard(s).length,25);
  for(const b of botSquads(s))assert.equal(validateTeam(b.team).length,5);
  const before=JSON.stringify(s);assert.deepEqual(botSquads(s),botSquads(s));assert.equal(JSON.stringify(s),before);
  for(const id of s.team)train(s,id,true);const low=botSquads(s)[0].level;
@@ -110,4 +110,4 @@ test('六池独立保底、阵营限定、UP歪后必出与新手上限',()=>{
  const restored=restore(JSON.stringify(s),NOW);assert.equal(restored.pools.featured.featuredNext,true);restored.pools.featured.pity=49;assert.equal(draw(restored,1,()=>.99,'featured').results[0].id,'nezha');assert.equal(restored.pools.featured.featuredNext,false);
  assert.equal(HERO_BY_ID[draw(s,10,()=>.99,'beginner').results[9].id].rarity,'SSR');draw(s,10,()=>.99,'beginner');assert.ok(draw(s,1,()=>.99,'beginner').error);assert.equal(s.pools.beginner.draws,20);
 });
-test('v3卡池迁移保留原有英雄、阵容和累计保底',()=>{const old=fresh(NOW);old.version=3;delete old.pools;delete old.activePool;old.pity=42;old.guarantee=2;old.draws=52;const s=restore(JSON.stringify(old),NOW);assert.equal(s.version,5);assert.equal(s.pools.standard.pity,42);assert.equal(s.pools.standard.draws,52);assert.deepEqual(s.team,old.team);assert.deepEqual(s.roster,old.roster);});
+test('v3卡池迁移保留原有英雄、阵容和累计保底',()=>{const old=fresh(NOW);old.version=3;delete old.pools;delete old.activePool;old.pity=42;old.guarantee=2;old.draws=52;const s=restore(JSON.stringify(old),NOW);assert.equal(s.version,6);assert.equal(s.pools.standard.pity,42);assert.equal(s.pools.standard.draws,52);assert.deepEqual(s.team,old.team);assert.deepEqual(s.roster,old.roster);});

@@ -1,3 +1,4 @@
+import {freshArmory,restoreArmory,drawGear} from './relic-pool.js';
 import {freshEstate} from './estate.js';
 import { HEROES, HERO_BY_ID, heroStats, validateTeam, teamPower, teamBattle, seededRandom } from './heroes.js';
 export const SAVE_KEY='one-leaf-squad-v3';
@@ -26,12 +27,18 @@ export const BOTS=[
  {id:'star',name:'星河渡',factor:1.20,offset:170,team:['yuan','chen','tai','ling','he']},
  {id:'crane',name:'鹤九霄',factor:1.28,offset:220,team:['long','chen','huang','yue','ming']}
 ];
+const NEW_ENEMIES=[['松风子',['yuan','qing','yan','li_tieguai','he']],['广寒客',['ri_you','wu_gang','xing','yue','ye']],['赤霄客',['long','baihu','huang','shennong','wukong']],['八仙客',['han_zhongli','qing','zhu','ling','lan_caihe']],['幽都客',['ma_mian','niu_tou','ming','meng_zhang','fengdu']],['补天客',['xuanwu','fuxi','qinglong','nuwa','houyi']],['雷泽客',['yangjian','nezha','lei','tao','leigong']],['玉虚客',['lingbao','guangle','yuanshi','yunzhongzi','yuding']],['星宿客',['ziwei','xue','doumu','taiyi','hanzhao']],['龙宫客',['ao_guang','long','yushi','aoli','jingwei']],['天庭客',['duo_wen','yunlu','yuhuang','yaochi','he']],['忘川客',['houtu','wu_gang','dianmu','xueyu','qiaoying']],['灵山客',['shi','zhu','fengbo','zao_shen','wukong']],['金乌客',['yuan','chen','yan','ling','houyi']],['青丘客',['xuanwu','baihu','huang','luyin','jingwei']],['蓬莱客',['han_zhongli','qing','moqiu','cao_guojiu','lan_caihe']]];
+for(const [i,[name,team]]of NEW_ENEMIES.entries())BOTS.push({id:'immortal'+i,name,team,factor:.8+i*.035,offset:-90+i*22});
+export const ENEMY_TEAMS=BOTS.map(b=>b.team);
+export function wish(s,id){if(s.renown<100)return{error:'声望达到 100 解锁心愿定向'};if(!Object.hasOwn(HERO_BY_ID,id))return{error:'英雄无效'};s.wishlist=id;return{ok:true};}
+export function redeemDestiny(s,id){if(s.renown<300)return{error:'声望达到 300 解锁天命自选'};if(s.destiny<10)return{error:'需要 10 枚天命印，每次挑战获胜获得 1 枚'};if(!Object.hasOwn(HERO_BY_ID,id)||!['SSR','UR'].includes(HERO_BY_ID[id].rarity))return{error:'请选择 SSR 或 UR 英雄'};s.destiny-=10;const own=s.roster[id];if(own)own.copies++;else s.roster[id]={level:1,star:0,copies:1};return{ok:true};}
+function rewardDraw(s,mode,step){s.destiny++;const previous=s.activePool;const heroes=[...draw(s,10,Math.random,'standard').results];s.activePool=previous;const gear=drawGear(s,step%2?'weapon':'artifact',1).results;if(mode==='tower'&&step%5===0){const eligible=HEROES.filter(h=>h.rarity===(step%10===0?'UR':'SSR'));const h=eligible[Math.floor(Math.random()*eligible.length)];if(s.roster[h.id])s.roster[h.id].copies++;else s.roster[h.id]={level:1,star:0,copies:1};heroes.push({id:h.id,isNew:s.roster[h.id].copies===1});}return{heroes,gear,destiny:1};}
 function daily(day){return{day,draws:0,wins:0,duels:0,claimed:[]};}
 function weekly(week,baseLevel){return{week,tower:0,claimed:[],baseLevel};}
 function arena(week,anchor=1){return{week,rating:1000,matches:0,wins:0,recent:[],anchor,bots:BOTS.map(b=>({id:b.id,rating:1000+b.offset}))};}
 export function fresh(now=Date.now()){
  const p=periods(now);
- return{version:5,estate:freshEstate(now),savedAt:now,activePool:'standard',pools:Object.fromEntries(Object.keys(POOLS).map(id=>[id,poolState()])),unlimited:true,roster:Object.fromEntries(STARTERS.map(id=>[id,{level:1,star:0,copies:1}])),team:[...STARTERS],draws:0,pity:0,guarantee:0,stage:1,wins:0,renown:0,seq:0,claimed:[],lastPool:'standard',lastDraw:[],daily:daily(p.day),weekly:weekly(p.week,1),arena:arena(p.week),lastSeason:null,lastSeen:now,legacy:null};
+ return{version:6,armory:freshArmory(),tower:0,wishlist:null,destiny:0,estate:freshEstate(now),savedAt:now,activePool:'standard',pools:Object.fromEntries(Object.keys(POOLS).map(id=>[id,poolState()])),unlimited:true,roster:Object.fromEntries(STARTERS.map(id=>[id,{level:1,star:0,copies:1}])),team:[...STARTERS],draws:0,pity:0,guarantee:0,stage:1,wins:0,renown:0,seq:0,claimed:[],lastPool:'standard',lastDraw:[],daily:daily(p.day),weekly:weekly(p.week,1),arena:arena(p.week),lastSeason:null,lastSeen:now,legacy:null};
 }
 export function levelLimit(s){return Math.min(100,20+Math.floor((s.stage-1)/5)*5);}
 export function draw(s,amount=1,random=Math.random,poolId=s.activePool){
@@ -47,6 +54,7 @@ export function draw(s,amount=1,random=Math.random,poolId=s.activePool){
    if(p.featuredNext||random()<.5){candidates=[HERO_BY_ID[config.featured]];p.featuredNext=false;}
    else {candidates=candidates.filter(h=>h.id!==config.featured);p.featuredNext=true;}
   }
+  if(poolId!=='featured'&&s.wishlist&&s.renown>=100&&rarity===HERO_BY_ID[s.wishlist].rarity&&candidates.some(h=>h.id===s.wishlist)&&random()<.5)candidates=[HERO_BY_ID[s.wishlist]];
   const h=candidates[clamp(Math.floor(random()*candidates.length),0,candidates.length-1)],isNew=!s.roster[h.id];
   if(isNew)s.roster[h.id]={level:1,star:0,copies:1};else s.roster[h.id].copies++;
   p.mythicPity=rarity==='UR'?0:p.mythicPity+1;p.pity=['SSR','UR'].includes(rarity)?0:p.pity+1;p.guarantee=rarity==='R'?p.guarantee+1:0;p.draws++;
@@ -74,7 +82,7 @@ export function botSquads(s){
   return{...b,roster,estate:s.estate,level,power:teamPower(b.team,roster,false,s.estate),rating:a.bots.find(x=>x.id===b.id).rating,bot:true};
  });
 }
-export function leaderboard(s){return[...botSquads(s),{id:'player',name:'你的仙盟',bot:false,team:s.team,power:teamPower(s.team,s.roster,false,s.estate),rating:s.arena.rating}].sort((a,b)=>b.rating-a.rating||a.id.localeCompare(b.id));}
+export function leaderboard(s){return[...botSquads(s),{id:'player',name:'你的仙盟',bot:false,team:s.team,power:teamPower(s.team,s.roster,false,s.estate,s.armory),rating:s.arena.rating}].sort((a,b)=>b.rating-a.rating||a.id.localeCompare(b.id));}
 export function syncTime(s,now=Date.now()){
  const time=Math.max(s.lastSeen,now),p=periods(time);let changed=false;
  if(p.day>s.daily.day){s.daily=daily(p.day);changed=true;}
@@ -83,25 +91,24 @@ export function syncTime(s,now=Date.now()){
 }
 export function opponent(s,mode,id){
  if(mode==='arena')return botSquads(s).find(b=>b.id===id)||null;
- const stage=mode==='tower'?s.weekly.tower+1:s.stage;
- if(mode==='tower'&&stage>10)return null;
- const team=BOTS[(stage-1)%BOTS.length].team;
- const level=clamp(mode==='tower'?Math.round(s.weekly.baseLevel*(.75+stage*.18)):1+Math.floor((stage-1)*1.3),1,100);
- const star=mode==='tower'?0:clamp(Math.floor((stage-1)/25),0,5);
+ const stage=mode==='tower'?s.tower+1:s.stage;
+ const team=ENEMY_TEAMS[(stage-1)%ENEMY_TEAMS.length];
+ const level=clamp(mode==='tower'?1+Math.floor(stage*.6):1+Math.floor((stage-1)*1.3),1,100);
+ const star=mode==='tower'?clamp(Math.floor(stage/20),0,5):clamp(Math.floor((stage-1)/25),0,5);
  const roster=Object.fromEntries(team.map(id=>[id,{level,star,copies:1}]));
  return{id:mode,name:mode==='tower'?`通天塔 · 第 ${stage} 层`:`山海试炼 · 第 ${stage} 关`,team,roster,power:teamPower(team,roster)};
 }
 export function startBattle(s,mode,id,seed=Date.now()){
  if(!['arena','adventure','tower'].includes(mode))return{error:'未知挑战'};
  const foe=opponent(s,mode,id);if(!foe)return{error:'对手不存在或本周试炼已经完成'};
- return{...teamBattle({team:s.team,roster:s.roster,estate:s.estate},foe,{seed}),mode,opponent:foe.id,foe,seq:s.seq,week:s.arena.week,stage:s.stage,floor:s.weekly.tower+1};
+ return{...teamBattle({team:s.team,roster:s.roster,estate:s.estate,armory:s.armory},foe,{seed}),mode,opponent:foe.id,foe,seq:s.seq,week:s.arena.week,stage:s.stage,floor:s.tower+1};
 }
 export function settle(s,result,now=Date.now()){
  syncTime(s,now);
  if(result.seq!==s.seq||!['arena','adventure','tower'].includes(result.mode))return false;
  if(result.mode!=='adventure'&&result.week!==s.arena.week)return false;
  if(result.mode==='adventure'&&result.stage!==s.stage)return false;
- if(result.mode==='tower'&&result.floor!==s.weekly.tower+1)return false;
+ if(result.mode==='tower'&&result.floor!==s.tower+1)return false;
  const won=result.winner==='left';
  if(result.mode==='arena'){
   const a=s.arena,b=a.bots.find(b=>b.id===result.opponent);if(!b)return false;
@@ -109,11 +116,11 @@ export function settle(s,result,now=Date.now()){
   a.rating=Math.max(0,a.rating+delta);b.rating=Math.max(0,b.rating-delta);a.matches++;a.wins+=Number(won);a.recent=[...a.recent,won].slice(-8);
   const avg=averageLevel(s),bound=clamp(a.anchor,avg*.65,avg*1.4);a.anchor=bound+(avg-bound)*.22;
   for(const other of a.bots)if(other.id!==b.id){const profile=BOTS.find(x=>x.id===other.id);other.rating=Math.max(0,other.rating+Math.round(clamp((a.rating+profile.offset-other.rating)*.08,-10,10)));}
-  s.daily.duels++;s.renown+=won?12:3;s.seq++;return{won,delta};
+  s.daily.duels++;s.renown+=won?12:3;s.seq++;const loot=won?rewardDraw(s,'arena',a.wins):null;return{won,delta,loot};
  }
  s.seq++;
- if(won){s.renown+=result.mode==='tower'?25:10;if(result.mode==='tower')s.weekly.tower++;else{s.stage++;s.wins++;s.daily.wins++;}}
- return{won,renown:won?(result.mode==='tower'?25:10):0};
+ if(won){s.renown+=result.mode==='tower'?25:10;if(result.mode==='tower'){s.weekly.tower++;s.tower++;}else{s.stage++;s.wins++;s.daily.wins++;}}
+ const loot=won?rewardDraw(s,result.mode,result.mode==='tower'?s.tower:s.stage-1):null;return{won,loot,renown:won?(result.mode==='tower'?25:10):0};
 }
 export const QUESTS=[
  {id:'summon',name:'引仙入盟',key:'draws',target:10,reward:20,detail:'累计招募 10 次'},
@@ -139,7 +146,7 @@ export function migrateLegacy(d,now=Date.now()){
 export function restore(raw,now=Date.now()){
  const d=typeof raw==='string'?JSON.parse(raw):raw;
  if([1,2].includes(d?.version))return migrateLegacy(d,now);
- if(!d||![3,4,5].includes(d.version))throw new Error('存档版本无效');
+ if(!d||![3,4,5,6].includes(d.version))throw new Error('存档版本无效');
  const n=(value,max=1e12,min=0)=>{if(!Number.isSafeInteger(value)||value<min||value>max)throw new Error('存档数值无效');return value;};
  const list=(v,allowed)=>{if(!Array.isArray(v))throw new Error('存档列表无效');return[...new Set(v.filter(x=>allowed.includes(x)))];};
  const s=fresh(now);s.roster={};
@@ -158,11 +165,11 @@ export function restore(raw,now=Date.now()){
  s.lastDraw=d.lastDraw.map(x=>{if(!s.roster[x.id]||typeof x.isNew!=='boolean')throw new Error('抽卡记录无效');return{id:x.id,isNew:x.isNew};});
  s.daily={day:n(d.daily?.day),draws:n(d.daily?.draws),wins:n(d.daily?.wins),duels:n(d.daily?.duels),claimed:list(d.daily?.claimed,DAILIES.map(q=>q.id))};
  const decimal=v=>{if(typeof v!=='number'||!Number.isFinite(v)||v<1||v>100)throw new Error('等级基准无效');return v;};
- s.weekly={week:n(d.weekly?.week),tower:n(d.weekly?.tower,10),baseLevel:decimal(d.weekly?.baseLevel),claimed:list(d.weekly?.claimed,['tower3','tower10'])};
+ s.weekly={week:n(d.weekly?.week),tower:n(d.weekly?.tower),baseLevel:decimal(d.weekly?.baseLevel),claimed:list(d.weekly?.claimed,['tower3','tower10'])};
  if(!Array.isArray(d.arena?.recent)||d.arena.recent.length>8||d.arena.recent.some(x=>typeof x!=='boolean'))throw new Error('竞技记录无效');
- s.arena={week:n(d.arena.week),rating:n(d.arena.rating),matches:n(d.arena.matches),wins:n(d.arena.wins),anchor:decimal(d.arena.anchor),recent:d.arena.recent,bots:BOTS.map(b=>({id:b.id,rating:n(d.arena.bots?.find(x=>x.id===b.id)?.rating)}))};
+ s.arena={week:n(d.arena.week),rating:n(d.arena.rating),matches:n(d.arena.matches),wins:n(d.arena.wins),anchor:decimal(d.arena.anchor),recent:d.arena.recent,bots:BOTS.map(b=>({id:b.id,rating:n(d.arena.bots?.find(x=>x.id===b.id)?.rating??(d.version<6&&b.id.startsWith('immortal')?1000+b.offset:undefined))}))};
  if(s.arena.week!==s.weekly.week)throw new Error('赛季不一致');
- s.lastSeason=d.lastSeason?{rating:n(d.lastSeason.rating),rank:n(d.lastSeason.rank,9,1),matches:n(d.lastSeason.matches)}:null;
+ s.lastSeason=d.lastSeason?{rating:n(d.lastSeason.rating),rank:n(d.lastSeason.rank,BOTS.length+1,1),matches:n(d.lastSeason.matches)}:null;
  s.legacy=d.legacy?{version:n(d.legacy.version,2,1),realm:n(d.legacy.realm,9999),stage:n(d.legacy.stage,100000,1)}:null;
  if(d.version>=5){
   const e=d.estate;if(!e)throw new Error('仙府数据缺失');s.estate={...freshEstate(now),level:n(e.level,10,1),insight:n(e.insight),totalInsight:n(e.totalInsight),lastHarvest:n(e.lastHarvest,1e15),pendingInsight:e.pendingInsight??0,elixirs:n(e.elixirs,10),expeditions:n(e.expeditions)};
@@ -173,6 +180,7 @@ export function restore(raw,now=Date.now()){
   if(!['sword','bell','mirror'].includes(e.equipped))throw new Error('法宝无效');s.estate.equipped=e.equipped;
   if(e.expedition){s.estate.expedition={endsAt:n(e.expedition.endsAt,1e15),team:validateTeam(e.expedition.team),reward:n(e.expedition.reward,160,70)};}
  }
+ if(d.version>=6){s.armory=restoreArmory(d.armory,s.roster);s.tower=n(d.tower);s.destiny=n(d.destiny);if(d.wishlist!==null&&!Object.hasOwn(HERO_BY_ID,d.wishlist))throw Error('心愿英雄无效');s.wishlist=d.wishlist;}else{s.tower=d.weekly?.tower||0;}
  s.savedAt=Number.isSafeInteger(d.savedAt)?d.savedAt:0;
  s.lastSeen=Number.isFinite(d.lastSeen)?Math.min(now,Math.max(0,d.lastSeen)):now;syncTime(s,now);return s;
 }

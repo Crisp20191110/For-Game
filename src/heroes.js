@@ -1,3 +1,4 @@
+import {gearBonus,EFFECTS} from './relic-pool.js';
 import {estateBonus} from './estate.js';
 export const RARITIES = {
   R: { name: '灵品', color: '#7b9c88', rate: .60, factor: 1 },
@@ -945,6 +946,8 @@ export const HEROES = [
     "art": 71
   }
 ];
+const SIGNATURES={qing:'纯阳剑歌',shi:'巨灵开山',ling:'荷露回春',yan:'万鸦焚天',ye:'夜巡摄魂',zhu:'洞箫引凤',xue:'四海瓶澜',yuan:'玲珑镇妖',tao:'麻姑献寿',xing:'太阴流辉',he:'降魔飞杵',lei:'风雷双翼',chen:'轩辕定鼎',long:'应龙破岳',yue:'广寒清辉',huang:'朱雀焚羽',ming:'钟馗伏魔',tai:'紫气东来',heling:'渔鼓惊仙',guichuan:'河伯翻潮',xinglin:'玉杵灵药',deng:'赤足踏云',qiaoying:'无常引魂',yufeng:'芭蕉借风',baihu:'白虎破军',yunlu:'增长慧剑',luyin:'南极长生',moqiu:'文昌点斗',hanzhao:'锁魂勾魄',xueyu:'忘川回梦',nezha:'三昧莲焰',yangjian:'天眼破妄',aoli:'龙宫甘露',yaochi:'瑶池涤尘',doumu:'斗极流光',wukong:'金身归元',han_zhongli:'宝扇还真',cao_guojiu:'玉板清音',li_tieguai:'葫芦济世',lan_caihe:'花篮摄霞',chi_guo:'琵琶镇邪',duo_wen:'宝伞护道',jiang_ziya:'封神点将',guangle:'番天印诀',yuding:'玉鼎斩仙',yunzhongzi:'松木除妖',yuanshi:'三清启灵',lingbao:'灵宝护元',wu_gang:'月桂斩影',ri_you:'日巡正气',ma_mian:'冥关守御',niu_tou:'幽关裂阵',meng_zhang:'红线牵缘',leigong:'五雷轰顶',dianmu:'金镜掣电',ziwei:'紫极镇星',taiyi:'九色莲华',fengdu:'酆都敕令',houtu:'大地承天',yuhuang:'天庭玉敕',tu_di:'厚土安神',zao_shen:'灶火护家',ao_guang:'东海涌潮',xuanwu:'龟蛇盘镇',fengbo:'飞廉御风',yushi:'甘霖普降',houyi:'落日神箭',jingwei:'衔石破浪',qinglong:'苍龙啸天',shennong:'百草回生',nuwa:'补天涤尘',fuxi:'八卦启灵'};
+for(const h of HEROES)h.skill=SIGNATURES[h.id]||h.skill;
 export const HERO_BY_ID = Object.fromEntries(HEROES.map(h => [h.id, h]));
 const BASE = {
   guard:{hp:650,atk:48,def:38,speed:65}, blade:{hp:420,atk:85,def:20,speed:92},
@@ -980,9 +983,9 @@ export function synergy(team){
  for(const b of bonds)if(b.count>=b.need)stats[b.stat]+=b.bonus;
  return{faction,size,bonus,stats,complete,bonds,trait};
 }
-export function teamPower(team,roster,normalized=false,estate=null){
+export function teamPower(team,roster,normalized=false,estate=null,armory=null){
  validateTeam(team);const bond=synergy(team),bonus=estateBonus(estate);
- return Math.round(team.reduce((sum,id)=>{const st=heroStats(id,normalized?50:roster[id].level,normalized?0:roster[id].star);return sum+st.atk*(1+bond.stats.atk+bonus.atk)*5+st.def*(1+bond.stats.def+bonus.def)*4+st.hp*(1+bond.stats.hp+bonus.hp)/3;},0));
+ return Math.round(team.reduce((sum,id)=>{const st=heroStats(id,normalized?50:roster[id].level,normalized?0:roster[id].star);const gear=gearBonus(armory,id);return sum+st.atk*(1+bond.stats.atk+bonus.atk+gear.atk)*5+st.def*(1+bond.stats.def+bonus.def+gear.def)*4+st.hp*(1+bond.stats.hp+bonus.hp+gear.hp)/3;},0));
 }
 export const SKILL_RULES = {
   guard:'绝技：全队获得自身攻击 90% 的护盾，自己嘲讽敌方 2 次行动。',
@@ -991,6 +994,8 @@ export const SKILL_RULES = {
   healer:'绝技：治疗全队，恢复自身攻击 110% 的气血；普攻改为治疗最低血量队友。',
   assassin:'绝技：优先攻击后排最低血量目标，造成 210% 攻击伤害并无视一半防御。'
 };
+export function heroEffect(id){const unique={nuwa:'cleanse',taiyi:'cleanse',yaochi:'cleanse',fuxi:'rally',jiang_ziya:'rally',yuanshi:'rally',wukong:'leech',li_tieguai:'leech',long:'shatter',yangjian:'shatter',baihu:'shatter',lei:'chain',leigong:'chain',dianmu:'chain',ming:'execute',fengdu:'execute',houyi:'execute'};if(unique[id])return unique[id];const h=HERO_BY_ID[id];if(['yan','nezha','huang','zao_shen'].includes(id))return 'burn';if(['houyi','yangjian','ming','fengdu'].includes(id))return 'mark';return ({guard:'ward',healer:'spring',assassin:'echo',blade:'mark',mage:'focus'})[h.role];}
+export function skillDetail(id){return EFFECTS[heroEffect(id)].text;}
 export function seededRandom(seed){let x=seed>>>0;return()=>{x=(Math.imul(x,1664525)+1013904223)>>>0;return x/4294967296;};}
 // Shared deterministic simulator: the same engine is usable in the browser and on a PK server.
 export function teamBattle(left,right,{seed=1,normalized=false,maxRounds=30}={}) {
@@ -998,12 +1003,12 @@ export function teamBattle(left,right,{seed=1,normalized=false,maxRounds=30}={})
   const random=seededRandom(seed),events=[];
   function create(side,source){const bond=synergy(source.team);return source.team.map((id,slot)=>{
     const st=heroStats(id,normalized?50:source.roster[id].level,normalized?0:source.roster[id].star);
-    const extra=estateBonus(source.estate);for(const k of ['hp','atk','def'])st[k]=Math.round(st[k]*(1+bond.stats[k]+extra[k]));st.healing=bond.stats.healing;st.crit=bond.stats.crit;
-    return {id,side,slot,...st,maxHp:st.hp,shield:0,energy:0,taunt:0,role:HERO_BY_ID[id].role};
+    const extra=estateBonus(source.estate),gear=gearBonus(source.armory,id);for(const k of ['hp','atk','def'])st[k]=Math.round(st[k]*(1+bond.stats[k]+extra[k]+gear[k]));st.healing=bond.stats.healing;st.crit=bond.stats.crit;
+    return {id,side,slot,...st,maxHp:st.hp,shield:0,energy:0,taunt:0,burn:0,mark:0,effects:[...new Set([heroEffect(id),...gear.effects])],star:source.roster[id].star,role:HERO_BY_ID[id].role};
   });}
   const a=create('left',left),b=create('right',right),all=[...a,...b];
   const living=xs=>xs.filter(x=>x.hp>0);
-  const snapshot=()=>all.map(x=>({id:x.id,side:x.side,hp:x.hp,maxHp:x.maxHp,shield:x.shield,energy:x.energy}));
+  const snapshot=()=>all.map(x=>({id:x.id,side:x.side,hp:x.hp,maxHp:x.maxHp,shield:x.shield,energy:x.energy,burn:x.burn,mark:x.mark}));
   const initial=snapshot();
   let rounds=0;
   for(let round=1;round<=maxRounds && living(a).length && living(b).length;round++){
@@ -1016,13 +1021,14 @@ export function teamBattle(left,right,{seed=1,normalized=false,maxRounds=30}={})
       const special=actor.energy>=2;actor.energy=special?0:actor.energy+1;
       const actions=[];
       function damage(target,multi,pierce=false){
+        if(target.hp<=0)return;multi*=1+(actor.effects.includes('execute')&&target.hp<target.maxHp*.5?.3:0)+(target.burn>0?.2:0)+(target.mark>0?.15:0)+(special?actor.star*.03:0);
         const crit=random()<.15+actor.crit;
         let amount=Math.max(Math.round(actor.atk*.25),Math.round(actor.atk*multi-target.def*(pierce?.5:1)))*(crit?1.5:1);
         amount=Math.round(amount);const absorbed=Math.min(target.shield,amount);target.shield-=absorbed;
         const actual=Math.min(target.hp,amount-absorbed);target.hp-=actual;
         actions.push({target:target.id,side:target.side,type:'damage',amount:actual,absorbed,crit});
       }
-      function heal(target,multi){const amount=Math.min(target.maxHp-target.hp,Math.round(actor.atk*multi*(1+actor.healing)));target.hp+=amount;actions.push({target:target.id,side:target.side,type:'heal',amount});}
+      function heal(target,multi){const amount=Math.min(target.maxHp-target.hp,Math.round(actor.atk*multi*(1+actor.healing)));target.hp+=amount;if(special)target.burn=0;actions.push({target:target.id,side:target.side,type:'heal',amount});}
       const taunter=foes.find(x=>x.taunt>0);
       const front=foes.filter(x=>x.slot<2), back=foes.filter(x=>x.slot>=2);
       const weakest=xs=>[...xs].sort((u,v)=>u.hp/u.maxHp-v.hp/v.maxHp||u.slot-v.slot)[0];
@@ -1039,7 +1045,24 @@ export function teamBattle(left,right,{seed=1,normalized=false,maxRounds=30}={})
         damage(target,special?(actor.role==='assassin'?2.1:2.25):1,special&&actor.role==='assassin');
         if(taunter)taunter.taunt--;
       }
-      events.push({round,actor:actor.id,side:actor.side,special,skill:special?HERO_BY_ID[actor.id].skill:actor.role==='healer'?'灵息回春':'普通攻击',actions,units:snapshot()});
+      if(special){
+        const hitIds=actions.filter(x=>x.type==='damage').map(x=>x.target);
+        for(const effect of actor.effects){
+          if(effect==='burn'||effect==='mark')for(const target of foes.filter(x=>x.hp>0&&hitIds.includes(x.id)))target[effect]=2;
+          if(effect==='focus')actor.energy=1;
+          if(effect==='cleanse')for(const target of allies){target.burn=0;target.mark=0;}
+          if(effect==='rally')for(const target of allies)if(target!==actor)target.energy=Math.min(2,target.energy+1);
+          if(effect==='leech')heal(actor,1);
+          if(effect==='chain')for(const target of living(foes))damage(target,.25);
+          if(effect==='shatter')for(const target of living(foes).filter(x=>hitIds.includes(x.id))){const amount=Math.min(target.shield,Math.round(actor.atk*.6));target.shield-=amount;actions.push({target:target.id,side:target.side,type:'break',amount});}
+          if(effect==='echo'&&living(foes).length)damage(weakest(living(foes)),.45);
+          if(effect==='spring')heal(weakest(allies),.7);
+          if(effect==='ward'){const target=weakest(allies),amount=Math.min(Math.round(actor.atk*.8),Math.max(0,Math.round(target.maxHp*.6)-target.shield));target.shield+=amount;actions.push({target:target.id,side:target.side,type:'shield',amount});}
+        }
+      }
+      if(actor.burn>0){const amount=Math.min(actor.hp,Math.round(actor.maxHp*.04));actor.hp-=amount;actor.burn--;actions.push({target:actor.id,side:actor.side,type:'burn',amount});}
+      if(actor.mark>0)actor.mark--;
+      events.push({round,actor:actor.id,side:actor.side,special,skill:special?HERO_BY_ID[actor.id].skill+' · '+actor.effects.map(e=>EFFECTS[e].name).join(' / '):actor.role==='healer'?'灵息回春':'普通攻击',actions,units:snapshot()});
     }
   }
   const leftAlive=living(a).length,rightAlive=living(b).length;

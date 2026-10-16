@@ -1,3 +1,16 @@
+# v6.0.0 验证记录
+
+- `npm run build`：生成 Safari 15 目标的经典脚本、整合样式与独立 HTML。
+- `npm test`：55/55。包括旧版单人规则兼容测试（其中十层封顶测试仅用于旧引擎），当前 v6 无尽塔另测第 11 和 10001 层。
+- `BROWSER_EXECUTABLE=/usr/bin/chromium node tests/browser.mjs`：英雄抽卡、升星、编队、24 机器人、战斗奖励、导入导出、离线、换季、多窗口、Worker 更新、六种视口。
+- `node tests/v5-browser.mjs`：72 英雄、三阵营、仙府、30 日离开保留存档、损坏恢复与数据库八快照。
+- `node tests/v6-browser.mjs`：直出十连、双器物池、装备、心愿自选、升星预览、第 11 层奖励与重载保存、移动弹窗布局。
+- `node tests/deployment.mjs`：真实 ZIP 解压子目录运行、六英雄池、图像、离线、资源丢失提示、独立 HTML。
+
+不等于真实 iPhone Safari 实机或用户现有网址已部署验证。
+
+---
+
 # v5.0.1 神府纪 · 验证记录
 
 2026-10-16，Linux、Node.js 24、Chromium / Playwright。未完成实体 iPhone Safari 或 WebKit 实测，手机尺寸模拟不能替代实体设备验证。
