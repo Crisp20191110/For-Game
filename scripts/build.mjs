@@ -1,7 +1,7 @@
 import {build} from 'esbuild';
 import {readFile,writeFile} from 'node:fs/promises';
-await build({entryPoints:['src/squad-app.js'],outfile:'public/game.js',bundle:true,format:'iife',target:['safari15'],minify:true,banner:{js:"/* One Leaf v5.0 - bundled for static hosting and Safari */\nif(!Object.hasOwn)Object.hasOwn=function(o,k){return Object.prototype.hasOwnProperty.call(o,k);};"}});
-let css='/* One Leaf v5.0 */\n';
+await build({entryPoints:['src/squad-app.js'],outfile:'public/game.js',bundle:true,format:'iife',target:['safari15'],minify:true,banner:{js:"/* One Leaf v5.0.1 - bundled for static hosting and Safari */\nif(!Object.hasOwn)Object.hasOwn=function(o,k){return Object.prototype.hasOwnProperty.call(o,k);};"}});
+let css='/* One Leaf v5.0.1 */\n';
 for(const file of ['src/style.css','src/cards.css','src/visual.css','src/immortal.css'])css+=await readFile(file,'utf8')+'\n';
 await writeFile('public/game.css',css);
 console.log('Built self-contained browser script and styles: public/game.js, public/game.css');

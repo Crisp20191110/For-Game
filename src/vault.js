@@ -3,7 +3,11 @@ const DB='one-leaf-vault',STORE='snapshots';
 let dbPromise;
 function db(){return dbPromise??=new Promise((resolve,reject)=>{if(!globalThis.indexedDB)return reject(new Error('IndexedDB unavailable'));const request=indexedDB.open(DB,1);request.onupgradeneeded=()=>request.result.createObjectStore(STORE,{keyPath:'key'});request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);});}
 async function idbRead(){const database=await db();return new Promise((resolve,reject)=>{const q=database.transaction(STORE).objectStore(STORE).getAll();q.onsuccess=()=>resolve(q.result);q.onerror=()=>reject(q.error);});}
-async function idbWrite(record){const database=await db();return new Promise((resolve,reject)=>{const tx=database.transaction(STORE,'readwrite');tx.objectStore(STORE).put(record);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);});}
+async function idbWrite(record,rootKey){const database=await db();return new Promise((resolve,reject)=>{
+ const tx=database.transaction(STORE,'readwrite'),store=tx.objectStore(STORE);store.put(record);
+ const request=store.getAll();request.onsuccess=()=>{const own=request.result.filter(r=>r.key.startsWith(rootKey+':')).sort((a,b)=>b.time-a.time);for(const old of own.slice(8))store.delete(old.key);};
+ tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);tx.onabort=()=>reject(tx.error||new Error('Save transaction aborted'));
+});}
 export function createVault(key,validate,storage=globalThis.localStorage){
  let queue=Promise.resolve(),lastRaw=null,lastTime=0;
  const read=k=>{try{return storage.getItem(k);}catch{return null;}};
@@ -27,9 +31,11 @@ export function createVault(key,validate,storage=globalThis.localStorage){
    let local=false;
    try{let list=[];try{list=JSON.parse(read(backupsKey)||'[]');if(!Array.isArray(list))list=[];}catch{}
     if(lastRaw){try{validate(lastRaw);list.unshift({raw:lastRaw,time:JSON.parse(lastRaw).savedAt||time-1});}catch{}}
-    storage.setItem(backupsKey,JSON.stringify(list.slice(0,8)));storage.setItem(key,raw);lastRaw=raw;local=true;
+    storage.setItem(backupsKey,JSON.stringify(list.slice(0,8)));
    }catch{}
-   queue=queue.then(async()=>{try{await idbWrite({key:key+':'+time%8,raw,time});return true;}catch{return false;}});
+   // A failed history write must not suppress the smaller primary save.
+   try{storage.setItem(key,raw);lastRaw=raw;local=true;}catch{}
+   queue=queue.then(async()=>{try{await idbWrite({key:key+':'+time,raw,time},key);return true;}catch{return false;}});
    return{raw,local,durable:queue};
   },
   adopt(){lastRaw=read(key);},

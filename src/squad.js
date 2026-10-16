@@ -165,7 +165,8 @@ export function restore(raw,now=Date.now()){
  s.lastSeason=d.lastSeason?{rating:n(d.lastSeason.rating),rank:n(d.lastSeason.rank,9,1),matches:n(d.lastSeason.matches)}:null;
  s.legacy=d.legacy?{version:n(d.legacy.version,2,1),realm:n(d.legacy.realm,9999),stage:n(d.legacy.stage,100000,1)}:null;
  if(d.version>=5){
-  const e=d.estate;if(!e)throw new Error('仙府数据缺失');s.estate={...freshEstate(now),level:n(e.level,10,1),insight:n(e.insight),totalInsight:n(e.totalInsight),lastHarvest:n(e.lastHarvest,1e15),elixirs:n(e.elixirs,10),expeditions:n(e.expeditions)};
+  const e=d.estate;if(!e)throw new Error('仙府数据缺失');s.estate={...freshEstate(now),level:n(e.level,10,1),insight:n(e.insight),totalInsight:n(e.totalInsight),lastHarvest:n(e.lastHarvest,1e15),pendingInsight:e.pendingInsight??0,elixirs:n(e.elixirs,10),expeditions:n(e.expeditions)};
+  if(typeof s.estate.pendingInsight!=='number'||!Number.isFinite(s.estate.pendingInsight)||s.estate.pendingInsight<0||s.estate.pendingInsight>=1)throw new Error('离线收益零头无效');
   for(const id of ['garden','forge','library']){s.estate.buildings[id]=n(e.buildings?.[id],10,1);const hero=e.assignments?.[id];if(hero!==null&&!s.roster[hero])throw new Error('派驻英雄无效');s.estate.assignments[id]=hero;}
   const assigned=Object.values(s.estate.assignments).filter(Boolean);if(new Set(assigned).size!==assigned.length)throw new Error('重复派驻');
   for(const id of ['sword','bell','mirror'])s.estate.relics[id]=n(e.relics?.[id],10);

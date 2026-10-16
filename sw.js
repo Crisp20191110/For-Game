@@ -1,13 +1,14 @@
 // Cache the complete app shell as one version: offline mode never mixes modules from different releases.
-const CACHE = 'one-leaf-v5';
 const BASE = new URL('./', self.location.href);
-const FILES = ['./', 'index.html', 'public/game.js?v=5.0.0', 'public/game.css?v=5.0.0', 'public/heroes-atlas.png', 'public/heroes-atlas-2.png', 'public/sanctuary.png', 'public/landscape.svg', 'public/icon.svg', 'public/icon-192.png', 'public/icon-512.png', 'manifest.webmanifest'].map(file => new URL(file, BASE).href);
+const PREFIX = 'one-leaf-scope:' + encodeURIComponent(BASE.pathname) + ':';
+const CACHE = PREFIX + '5.0.1';
+const FILES = ['./', 'index.html', 'public/game.js?v=5.0.1', 'public/game.css?v=5.0.1', 'public/heroes-atlas.png', 'public/heroes-atlas-2.png', 'public/sanctuary.png', 'public/landscape.svg', 'public/icon.svg', 'public/icon-192.png', 'public/icon-512.png', 'manifest.webmanifest'].map(file => new URL(file, BASE).href);
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CACHE).then(cache => cache.addAll(FILES.map(url => new Request(url, { cache: 'reload' })))));
 });
 self.addEventListener('message', event => { if (event.data?.type === 'SKIP_WAITING') self.skipWaiting(); });
 self.addEventListener('activate', event => {
-  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith('one-leaf-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+  event.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith(PREFIX) && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
 });
 self.addEventListener('fetch', event => {
   if (event.request.method !== 'GET' || new URL(event.request.url).origin !== self.location.origin) return;
