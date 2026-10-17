@@ -1,20 +1,27 @@
 {
-  "name": "封神天命录：七十二神将",
+  "name": "封神天命录 · 万神觉醒",
   "short_name": "封神天命录",
+  "description": "七十二神将，五人布阵，异兽法宝与道统连携。",
   "id": "./",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
   "orientation": "portrait",
-  "background_color": "#0d101a",
-  "theme_color": "#100f18",
+  "background_color": "#08131a",
+  "theme_color": "#08131a",
   "lang": "zh-CN",
   "icons": [
     {
-      "src": "./icon.svg",
-      "sizes": "any",
-      "type": "image/svg+xml",
-      "purpose": "any maskable"
+      "src": "./icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "./icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }
