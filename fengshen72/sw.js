@@ -1,7 +1,26 @@
-const CACHE='fengshen-tianming-72-v8.2';
-const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg'];
-self.addEventListener('install',e=>e.waitUntil(caches.open(CACHE).then(c=>c.addAll(CORE)).then(()=>self.skipWaiting())));
-self.addEventListener('activate',e=>e.waitUntil(caches.keys().then(a=>Promise.all(a.filter(k=>k.startsWith('fengshen-tianming-')&&k!==CACHE).map(k=>caches.delete(k)))).then(()=>self.clients.claim())));
-self.addEventListener('fetch',e=>{const r=e.request;if(r.method!=='GET'||new URL(r.url).origin!==self.location.origin)return;
-if(r.mode==='navigate'){e.respondWith(fetch(r).then(x=>{if(x.ok){const y=x.clone();caches.open(CACHE).then(c=>c.put('./index.html',y))}return x}).catch(()=>caches.match('./index.html')));return;}
-e.respondWith(caches.match(r).then(x=>x||fetch(r).then(y=>{if(y.ok)caches.open(CACHE).then(c=>c.put(r,y.clone()));return y})));});
+const CACHE='fengshen-tianming-72-v8.3';
+const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
+const ART=['./heroes-atlas.png','./heroes-atlas-2.png'];
+self.addEventListener('install',event=>event.waitUntil((async()=>{
+ const cache=await caches.open(CACHE);await cache.addAll(CORE);
+ await Promise.allSettled(ART.map(async path=>{const response=await fetch(path);if(response.ok)await cache.put(path,response)}));
+ await self.skipWaiting();
+})()));
+self.addEventListener('activate',event=>event.waitUntil((async()=>{
+ const names=await caches.keys();await Promise.all(names.filter(name=>name.startsWith('fengshen-tianming-')&&name!==CACHE).map(name=>caches.delete(name)));
+ await self.clients.claim();
+})()));
+self.addEventListener('fetch',event=>{
+ const request=event.request;
+ if(request.method!=='GET'||new URL(request.url).origin!==self.location.origin)return;
+ if(request.mode==='navigate'){
+  event.respondWith(fetch(request).then(response=>{
+   if(response.ok){const duplicate=response.clone();event.waitUntil(caches.open(CACHE).then(cache=>cache.put('./index.html',duplicate)).catch(()=>{}))}
+   return response;
+  }).catch(async()=>await caches.match('./index.html')||new Response('暂时离线，请联网首次加载游戏',{status:503})));return;
+ }
+ event.respondWith(caches.match(request).then(hit=>hit||fetch(request).then(response=>{
+  if(response.ok){const clone=response.clone();event.waitUntil(caches.open(CACHE).then(cache=>cache.put(request,clone)).catch(()=>{}))}
+  return response;
+ })));
+});
