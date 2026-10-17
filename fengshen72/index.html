@@ -3,7 +3,7 @@
 <meta name="description" content="七十二位东方神话神仙，五人组阵，三十星升星、法宝、装备、异兽、通天塔与战斗流派。离线单机可玩。"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-title" content="封神天命录"/><meta name="app-version" content="9.0.0"/>
+<meta name="apple-mobile-web-app-title" content="封神天命录"/><meta name="app-version" content="9.1.0"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png"/>
@@ -356,7 +356,12 @@ header .sub{letter-spacing:2px}
 .equipment-illustration.equip-2{background:radial-gradient(circle,#73614a,#182b33 70%)!important}
 .equipment-illustration.equip-3{background:radial-gradient(circle,#56786c,#142a33 70%)!important}
 @media(max-width:390px){.relic-art .relic-name-mark{font-size:9px!important}}
-</style></head><body><main class="app"><header><div><div class="brand"><span class="brand-seal">封</span><span>封神天命录</span></div><div class="sub">九霄万神 · 山海封神 <b>v9.0.0</b></div></div><div class="resource" id="res"></div></header><div id="main"></div></main><nav class="bottom" id="nav"></nav><div id="pop"></div><input id="fs-import" type="file" accept="application/json,.json" hidden/><script>
+
+/* v9.1: art index is bound to hero.id, never roster sort position. */
+.portrait.atlas-remaining{background-image:url('./heroes-remaining-28.svg')!important;background-repeat:no-repeat!important;background-size:700% 400%!important;image-rendering:auto}
+.portrait.atlas-remaining::before{display:none}
+@media(max-width:360px){.portrait.atlas-remaining .portrait-corner{font-size:8px}}
+</style></head><body><main class="app"><header><div><div class="brand"><span class="brand-seal">封</span><span>封神天命录</span></div><div class="sub">九霄万神 · 山海封神 <b>v9.1.0</b></div></div><div class="resource" id="res"></div></header><div id="main"></div></main><nav class="bottom" id="nav"></nav><div id="pop"></div><input id="fs-import" type="file" accept="application/json,.json" hidden/><script>
 (()=>{'use strict';
 const lines=`女娲|神话|上古|灵医|🐉|山河社稷图|补天造化|heal|shield|仁心
 盘古|神话|上古|破军|🪓|开天神斧|开天辟地|aoe|break|巨力
@@ -435,6 +440,9 @@ const ART_LOOKUP={"吕洞宾":0,"巨灵神":1,"何仙姑":2,"罗宣":3,"夜游�
 const PAINTED_BACKUP={};
 // Approved, identity-specific newly painted panels; [hero ID] -> 3x3 atlas index.
 const SPECIAL_ART_ID=Object.freeze({1:0,3:1,4:2,6:3,7:4,12:5,15:6,18:7,19:8});
+// v9.1 deterministic index: all 27 previously generic portraits are name-bound.
+const REMAINING_ART_ID=Object.freeze({"20":0,"21":1,"23":2,"24":3,"25":4,"26":5,"28":6,"33":7,"35":8,"36":9,"37":10,"43":11,"46":12,"49":13,"50":14,"51":15,"52":16,"53":17,"54":18,"55":19,"56":20,"57":21,"58":22,"59":23,"60":24,"61":25,"63":26});
+
 const RELIC_ART_ID=Object.freeze(HEROS.map(h=>h.id));
 if(new Set(RELIC_ART_ID).size!==HEROS.length)throw Error('法宝立绘ID重复');
 
@@ -455,11 +463,21 @@ function silhouetteArt(h){
 const HERO_ART_BY_ID=Object.freeze(HEROS.map(h=>{const atlasName=ART_ALIASES[h.name]||h.name;const index=ART_LOOKUP[atlasName];return Number.isInteger(index)?index:null}));
 const HERO_ART_DUPLICATES=HERO_ART_BY_ID.filter((x,i)=>x!==null&&HERO_ART_BY_ID.indexOf(x)!==i);
 if(HERO_ART_DUPLICATES.length)throw Error('角色立绘资源索引重复：'+HERO_ART_DUPLICATES.join(','));
+if(Object.keys(REMAINING_ART_ID).length!==27||new Set(Object.values(REMAINING_ART_ID)).size!==27)throw Error('剩余神将画面映射非法');
+for(const [id,idx] of Object.entries(REMAINING_ART_ID)){
+ const hero=HEROS[+id];if(!hero||HERO_ART_BY_ID[+id]!==null||Number.isInteger(SPECIAL_ART_ID[+id]))throw Error('神仙立绘资源重叠：'+id);
+ if(!Number.isInteger(idx)||idx<0||idx>=27)throw Error('神仙立绘画面越界：'+id);
+}
+for(const hero of HEROS){if(!Number.isInteger(HERO_ART_BY_ID[hero.id])&&!Number.isInteger(SPECIAL_ART_ID[hero.id])&&!Number.isInteger(REMAINING_ART_ID[hero.id]))throw Error('神仙缺少立绘：'+hero.name)}
+
 function portrait(h,cls=''){const idx=HERO_ART_BY_ID[h.id];if(HEROS[h.id]!==h)throw Error('神将身份与立绘索引不一致：'+h.id);
  const special=SPECIAL_ART_ID[h.id];
  if(Number.isInteger(special))return `<span class="portrait art atlas-special ${cls}" data-hero-id="${h.id}" data-art-index="special-${special}" role="img" aria-label="${h.name}专属立绘" style="--art-x:${(special%3)*50}%;--art-y:${Math.floor(special/3)*50}%"><span class="portrait-corner">${h.camp.slice(0,1)} · ${h.role.slice(0,1)}</span></span>`;
+
+ const original=REMAINING_ART_ID[h.id];
+ if(Number.isInteger(original))return `<span class="portrait art atlas-remaining ${cls}" data-hero-id="${h.id}" data-art-index="remaining-${original}" role="img" aria-label="${h.name}专属角色绘卷" style="--art-x:${(original%7)*(100/6)}%;--art-y:${Math.floor(original/7)*(100/3)}%"><span class="portrait-corner">${h.camp.slice(0,1)} · ${h.role.slice(0,1)}</span></span>`;
  if(Number.isInteger(idx))return `<span class="portrait art ${cls} atlas-${Math.floor(idx/36)}" data-hero-id="${h.id}" data-art-index="${idx}" role="img" aria-label="${h.name}立绘" style="--art-x:${idx%6*20}%;--art-y:${Math.floor((idx%36)/6)*20}%"><span class="portrait-corner">${h.camp.slice(0,1)} · ${h.role.slice(0,1)}</span></span>`;
- return `<span class="portrait ink drawn ${cls}" data-hero-id="${h.id}" data-art-index="identity-${h.id}" role="img" aria-label="${h.name}待精绘角色绘卷">${silhouetteArt(h)}<span class="portrait-corner">${h.camp.slice(0,1)} · ${h.role.slice(0,1)}</span></span>`;
+ throw Error('立绘资源未分配：'+h.name);
 }
 function smallPortrait(h){return portrait(h,'small-portrait')}
 // Unified painted item system: no emoji placeholders in cards or detail pages.

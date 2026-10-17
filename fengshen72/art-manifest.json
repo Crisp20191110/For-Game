@@ -1,0 +1,951 @@
+{
+  "version": "9.1.0",
+  "heroPortraits": [
+    {
+      "heroId": 0,
+      "heroName": "女娲",
+      "source": "original",
+      "atlasIndex": 70,
+      "file": "heroes-atlas-2.png"
+    },
+    {
+      "heroId": 1,
+      "heroName": "盘古",
+      "source": "painted",
+      "atlasIndex": 0,
+      "file": "heroes-special-nine.jpg"
+    },
+    {
+      "heroId": 2,
+      "heroName": "伏羲",
+      "source": "original",
+      "atlasIndex": 71,
+      "file": "heroes-atlas-2.png"
+    },
+    {
+      "heroId": 3,
+      "heroName": "鸿钧老祖",
+      "source": "painted",
+      "atlasIndex": 1,
+      "file": "heroes-special-nine.jpg"
+    },
+    {
+      "heroId": 4,
+      "heroName": "通天教主",
+      "source": "painted",
+      "atlasIndex": 2,
+      "file": "heroes-special-nine.jpg"
+    },
+    {
+      "heroId": 5,
+      "heroName": "元始天尊",
+      "source": "original",
+      "atlasIndex": 46,
+      "file": "heroes-atlas-2.png"
+    },
+    {
+      "heroId": 6,
+      "heroName": "如来佛祖",
+      "source": "painted",
+      "atlasIndex": 3,
+      "file": "heroes-special-nine.jpg"
+    },
+    {
+      "heroId": 7,
+      "heroName": "东皇太一",
+      "source": "painted",
+      "atlasIndex": 4,
+      "file": "heroes-special-nine.jpg"
+    },
+    {
+      "heroId": 8,
+      "heroName": "哪吒",
+      "source": "original",
+      "atlasIndex": 30,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 9,
+      "heroName": "二郎神杨戬",
+      "source": "original",
+      "atlasIndex": 31,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 10,
+      "heroName": "孙悟空",
+      "source": "original",
+      "atlasIndex": 35,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 11,
+      "heroName": "姜子牙",
+      "source": "original",
+      "atlasIndex": 42,
+      "file": "heroes-atlas-2.png"
+    },
+    {
+      "heroId": 12,
+      "heroName": "太乙真人",
+      "source": "painted",
+      "atlasIndex": 5,
+      "file": "heroes-special-nine.jpg"
+    },
+    {
+      "heroId": 13,
+      "heroName": "雷震子",
+      "source": "original",
+      "atlasIndex": 11,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 14,
+      "heroName": "玉皇大帝",
+      "source": "original",
+      "atlasIndex": 59,
+      "file": "heroes-atlas-2.png"
+    },
+    {
+      "heroId": 15,
+      "heroName": "王母娘娘",
+      "source": "painted",
+      "atlasIndex": 6,
+      "file": "heroes-special-nine.jpg"
+    },
+    {
+      "heroId": 16,
+      "heroName": "后羿",
+      "source": "original",
+      "atlasIndex": 66,
+      "file": "heroes-atlas-2.png"
+    },
+    {
+      "heroId": 17,
+      "heroName": "嫦娥",
+      "source": "original",
+      "atlasIndex": 14,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 18,
+      "heroName": "刑天",
+      "source": "painted",
+      "atlasIndex": 7,
+      "file": "heroes-special-nine.jpg"
+    },
+    {
+      "heroId": 19,
+      "heroName": "祝融",
+      "source": "painted",
+      "atlasIndex": 8,
+      "file": "heroes-special-nine.jpg"
+    },
+    {
+      "heroId": 20,
+      "heroName": "共工",
+      "source": "identity-specific-vector",
+      "atlasIndex": 0,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 21,
+      "heroName": "九天玄女",
+      "source": "identity-specific-vector",
+      "atlasIndex": 1,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 22,
+      "heroName": "太上老君",
+      "source": "original",
+      "atlasIndex": 17,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 23,
+      "heroName": "观音菩萨",
+      "source": "identity-specific-vector",
+      "atlasIndex": 2,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 24,
+      "heroName": "地藏王",
+      "source": "identity-specific-vector",
+      "atlasIndex": 3,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 25,
+      "heroName": "阎罗王",
+      "source": "identity-specific-vector",
+      "atlasIndex": 4,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 26,
+      "heroName": "牛魔王",
+      "source": "identity-specific-vector",
+      "atlasIndex": 5,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 27,
+      "heroName": "铁扇公主",
+      "source": "original",
+      "atlasIndex": 23,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 28,
+      "heroName": "苏妲己",
+      "source": "identity-specific-vector",
+      "atlasIndex": 6,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 29,
+      "heroName": "孟婆",
+      "source": "original",
+      "atlasIndex": 29,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 30,
+      "heroName": "黑无常",
+      "source": "original",
+      "atlasIndex": 28,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 31,
+      "heroName": "白无常",
+      "source": "original",
+      "atlasIndex": 22,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 32,
+      "heroName": "精卫",
+      "source": "original",
+      "atlasIndex": 67,
+      "file": "heroes-atlas-2.png"
+    },
+    {
+      "heroId": 33,
+      "heroName": "夸父",
+      "source": "identity-specific-vector",
+      "atlasIndex": 7,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 34,
+      "heroName": "托塔李天王",
+      "source": "original",
+      "atlasIndex": 7,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 35,
+      "heroName": "白骨夫人",
+      "source": "identity-specific-vector",
+      "atlasIndex": 8,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 36,
+      "heroName": "红孩儿",
+      "source": "identity-specific-vector",
+      "atlasIndex": 9,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 37,
+      "heroName": "织女",
+      "source": "identity-specific-vector",
+      "atlasIndex": 10,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 38,
+      "heroName": "巨灵神",
+      "source": "original",
+      "atlasIndex": 1,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 39,
+      "heroName": "土地公",
+      "source": "original",
+      "atlasIndex": 60,
+      "file": "heroes-atlas-2.png"
+    },
+    {
+      "heroId": 40,
+      "heroName": "河伯",
+      "source": "original",
+      "atlasIndex": 19,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 41,
+      "heroName": "赤脚大仙",
+      "source": "original",
+      "atlasIndex": 21,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 42,
+      "heroName": "夜游神",
+      "source": "original",
+      "atlasIndex": 4,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 43,
+      "heroName": "山神",
+      "source": "identity-specific-vector",
+      "atlasIndex": 11,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 44,
+      "heroName": "灵宝天尊",
+      "source": "original",
+      "atlasIndex": 47,
+      "file": "heroes-atlas-2.png"
+    },
+    {
+      "heroId": 45,
+      "heroName": "神农氏",
+      "source": "original",
+      "atlasIndex": 69,
+      "file": "heroes-atlas-2.png"
+    },
+    {
+      "heroId": 46,
+      "heroName": "烛九阴",
+      "source": "identity-specific-vector",
+      "atlasIndex": 12,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 47,
+      "heroName": "斗姆元君",
+      "source": "original",
+      "atlasIndex": 34,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 48,
+      "heroName": "紫微大帝",
+      "source": "original",
+      "atlasIndex": 55,
+      "file": "heroes-atlas-2.png"
+    },
+    {
+      "heroId": 49,
+      "heroName": "真武大帝",
+      "source": "identity-specific-vector",
+      "atlasIndex": 13,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 50,
+      "heroName": "文殊菩萨",
+      "source": "identity-specific-vector",
+      "atlasIndex": 14,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 51,
+      "heroName": "普贤菩萨",
+      "source": "identity-specific-vector",
+      "atlasIndex": 15,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 52,
+      "heroName": "赵公明",
+      "source": "identity-specific-vector",
+      "atlasIndex": 16,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 53,
+      "heroName": "闻仲",
+      "source": "identity-specific-vector",
+      "atlasIndex": 17,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 54,
+      "heroName": "申公豹",
+      "source": "identity-specific-vector",
+      "atlasIndex": 18,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 55,
+      "heroName": "云霄仙子",
+      "source": "identity-specific-vector",
+      "atlasIndex": 19,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 56,
+      "heroName": "碧霄仙子",
+      "source": "identity-specific-vector",
+      "atlasIndex": 20,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 57,
+      "heroName": "琼霄仙子",
+      "source": "identity-specific-vector",
+      "atlasIndex": 21,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 58,
+      "heroName": "金灵圣母",
+      "source": "identity-specific-vector",
+      "atlasIndex": 22,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 59,
+      "heroName": "镇元大仙",
+      "source": "identity-specific-vector",
+      "atlasIndex": 23,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 60,
+      "heroName": "南极仙翁",
+      "source": "identity-specific-vector",
+      "atlasIndex": 24,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 61,
+      "heroName": "白素贞",
+      "source": "identity-specific-vector",
+      "atlasIndex": 25,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 62,
+      "heroName": "黄帝",
+      "source": "original",
+      "atlasIndex": 12,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 63,
+      "heroName": "蚩尤",
+      "source": "identity-specific-vector",
+      "atlasIndex": 26,
+      "file": "heroes-remaining-28.svg"
+    },
+    {
+      "heroId": 64,
+      "heroName": "铁拐李",
+      "source": "original",
+      "atlasIndex": 38,
+      "file": "heroes-atlas-2.png"
+    },
+    {
+      "heroId": 65,
+      "heroName": "吕洞宾",
+      "source": "original",
+      "atlasIndex": 0,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 66,
+      "heroName": "何仙姑",
+      "source": "original",
+      "atlasIndex": 2,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 67,
+      "heroName": "蓝采和",
+      "source": "original",
+      "atlasIndex": 39,
+      "file": "heroes-atlas-2.png"
+    },
+    {
+      "heroId": 68,
+      "heroName": "韩湘子",
+      "source": "original",
+      "atlasIndex": 5,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 69,
+      "heroName": "曹国舅",
+      "source": "original",
+      "atlasIndex": 37,
+      "file": "heroes-atlas-2.png"
+    },
+    {
+      "heroId": 70,
+      "heroName": "张果老",
+      "source": "original",
+      "atlasIndex": 18,
+      "file": "heroes-atlas.png"
+    },
+    {
+      "heroId": 71,
+      "heroName": "汉钟离",
+      "source": "original",
+      "atlasIndex": 36,
+      "file": "heroes-atlas-2.png"
+    }
+  ],
+  "relicPortraits": [
+    {
+      "heroId": 0,
+      "artifactName": "山河社稷图",
+      "atlasIndex": 0,
+      "type": "scroll"
+    },
+    {
+      "heroId": 1,
+      "artifactName": "开天神斧",
+      "atlasIndex": 1,
+      "type": "axe"
+    },
+    {
+      "heroId": 2,
+      "artifactName": "伏羲琴",
+      "atlasIndex": 2,
+      "type": "lute"
+    },
+    {
+      "heroId": 3,
+      "artifactName": "造化玉碟",
+      "atlasIndex": 3,
+      "type": "mirror"
+    },
+    {
+      "heroId": 4,
+      "artifactName": "诛仙四剑",
+      "atlasIndex": 4,
+      "type": "blade"
+    },
+    {
+      "heroId": 5,
+      "artifactName": "盘古幡",
+      "atlasIndex": 5,
+      "type": "fan"
+    },
+    {
+      "heroId": 6,
+      "artifactName": "掌中佛国",
+      "atlasIndex": 6,
+      "type": "hand"
+    },
+    {
+      "heroId": 7,
+      "artifactName": "东皇钟",
+      "atlasIndex": 7,
+      "type": "gong"
+    },
+    {
+      "heroId": 8,
+      "artifactName": "乾坤圈",
+      "atlasIndex": 8,
+      "type": "ring"
+    },
+    {
+      "heroId": 9,
+      "artifactName": "三尖两刃刀",
+      "atlasIndex": 9,
+      "type": "blade"
+    },
+    {
+      "heroId": 10,
+      "artifactName": "如意金箍棒",
+      "atlasIndex": 10,
+      "type": "talisman"
+    },
+    {
+      "heroId": 11,
+      "artifactName": "打神鞭",
+      "atlasIndex": 11,
+      "type": "staff"
+    },
+    {
+      "heroId": 12,
+      "artifactName": "九龙神火罩",
+      "atlasIndex": 12,
+      "type": "flame"
+    },
+    {
+      "heroId": 13,
+      "artifactName": "风雷黄金棍",
+      "atlasIndex": 13,
+      "type": "staff"
+    },
+    {
+      "heroId": 14,
+      "artifactName": "昊天镜",
+      "atlasIndex": 14,
+      "type": "mirror"
+    },
+    {
+      "heroId": 15,
+      "artifactName": "蟠桃仙杖",
+      "atlasIndex": 15,
+      "type": "staff"
+    },
+    {
+      "heroId": 16,
+      "artifactName": "射日神弓",
+      "atlasIndex": 16,
+      "type": "bow"
+    },
+    {
+      "heroId": 17,
+      "artifactName": "月魄玉轮",
+      "atlasIndex": 17,
+      "type": "ring"
+    },
+    {
+      "heroId": 18,
+      "artifactName": "干戚战斧",
+      "atlasIndex": 18,
+      "type": "axe"
+    },
+    {
+      "heroId": 19,
+      "artifactName": "祝融火令",
+      "atlasIndex": 19,
+      "type": "flame"
+    },
+    {
+      "heroId": 20,
+      "artifactName": "断水戟",
+      "atlasIndex": 20,
+      "type": "blade"
+    },
+    {
+      "heroId": 21,
+      "artifactName": "九天兵符",
+      "atlasIndex": 21,
+      "type": "scroll"
+    },
+    {
+      "heroId": 22,
+      "artifactName": "紫金葫芦",
+      "atlasIndex": 22,
+      "type": "talisman"
+    },
+    {
+      "heroId": 23,
+      "artifactName": "净瓶杨柳",
+      "atlasIndex": 23,
+      "type": "vase"
+    },
+    {
+      "heroId": 24,
+      "artifactName": "谛听法铃",
+      "atlasIndex": 24,
+      "type": "gong"
+    },
+    {
+      "heroId": 25,
+      "artifactName": "生死簿",
+      "atlasIndex": 25,
+      "type": "scroll"
+    },
+    {
+      "heroId": 26,
+      "artifactName": "混铁棍",
+      "atlasIndex": 26,
+      "type": "staff"
+    },
+    {
+      "heroId": 27,
+      "artifactName": "芭蕉扇",
+      "atlasIndex": 27,
+      "type": "fan"
+    },
+    {
+      "heroId": 28,
+      "artifactName": "迷魂珠",
+      "atlasIndex": 28,
+      "type": "ring"
+    },
+    {
+      "heroId": 29,
+      "artifactName": "忘川汤",
+      "atlasIndex": 29,
+      "type": "talisman"
+    },
+    {
+      "heroId": 30,
+      "artifactName": "勾魂锁",
+      "atlasIndex": 30,
+      "type": "talisman"
+    },
+    {
+      "heroId": 31,
+      "artifactName": "招魂幡",
+      "atlasIndex": 31,
+      "type": "fan"
+    },
+    {
+      "heroId": 32,
+      "artifactName": "填海石",
+      "atlasIndex": 32,
+      "type": "talisman"
+    },
+    {
+      "heroId": 33,
+      "artifactName": "逐日杖",
+      "atlasIndex": 33,
+      "type": "staff"
+    },
+    {
+      "heroId": 34,
+      "artifactName": "玲珑宝塔",
+      "atlasIndex": 34,
+      "type": "pagoda"
+    },
+    {
+      "heroId": 35,
+      "artifactName": "白骨幡",
+      "atlasIndex": 35,
+      "type": "fan"
+    },
+    {
+      "heroId": 36,
+      "artifactName": "火尖枪",
+      "atlasIndex": 36,
+      "type": "flame"
+    },
+    {
+      "heroId": 37,
+      "artifactName": "云霞锦",
+      "atlasIndex": 37,
+      "type": "scroll"
+    },
+    {
+      "heroId": 38,
+      "artifactName": "宣花板斧",
+      "atlasIndex": 38,
+      "type": "axe"
+    },
+    {
+      "heroId": 39,
+      "artifactName": "福德印",
+      "atlasIndex": 39,
+      "type": "seal"
+    },
+    {
+      "heroId": 40,
+      "artifactName": "黄河图",
+      "atlasIndex": 40,
+      "type": "scroll"
+    },
+    {
+      "heroId": 41,
+      "artifactName": "逍遥葫芦",
+      "atlasIndex": 41,
+      "type": "talisman"
+    },
+    {
+      "heroId": 42,
+      "artifactName": "夜巡灯",
+      "atlasIndex": 42,
+      "type": "talisman"
+    },
+    {
+      "heroId": 43,
+      "artifactName": "山岳印",
+      "atlasIndex": 43,
+      "type": "seal"
+    },
+    {
+      "heroId": 44,
+      "artifactName": "万劫神图",
+      "atlasIndex": 44,
+      "type": "scroll"
+    },
+    {
+      "heroId": 45,
+      "artifactName": "神农鼎",
+      "atlasIndex": 45,
+      "type": "vase"
+    },
+    {
+      "heroId": 46,
+      "artifactName": "岁月之烛",
+      "atlasIndex": 46,
+      "type": "talisman"
+    },
+    {
+      "heroId": 47,
+      "artifactName": "群星璇玑",
+      "atlasIndex": 47,
+      "type": "talisman"
+    },
+    {
+      "heroId": 48,
+      "artifactName": "紫微星盘",
+      "atlasIndex": 48,
+      "type": "mirror"
+    },
+    {
+      "heroId": 49,
+      "artifactName": "真武剑",
+      "atlasIndex": 49,
+      "type": "blade"
+    },
+    {
+      "heroId": 50,
+      "artifactName": "智慧宝剑",
+      "atlasIndex": 50,
+      "type": "blade"
+    },
+    {
+      "heroId": 51,
+      "artifactName": "六牙白象",
+      "atlasIndex": 51,
+      "type": "animal"
+    },
+    {
+      "heroId": 52,
+      "artifactName": "定海珠",
+      "atlasIndex": 52,
+      "type": "ring"
+    },
+    {
+      "heroId": 53,
+      "artifactName": "雌雄蛟龙鞭",
+      "atlasIndex": 53,
+      "type": "staff"
+    },
+    {
+      "heroId": 54,
+      "artifactName": "飞头术",
+      "atlasIndex": 54,
+      "type": "soul"
+    },
+    {
+      "heroId": 55,
+      "artifactName": "混元金斗",
+      "atlasIndex": 55,
+      "type": "vase"
+    },
+    {
+      "heroId": 56,
+      "artifactName": "金蛟剪",
+      "atlasIndex": 56,
+      "type": "blade"
+    },
+    {
+      "heroId": 57,
+      "artifactName": "缚龙索",
+      "atlasIndex": 57,
+      "type": "rope"
+    },
+    {
+      "heroId": 58,
+      "artifactName": "四象塔",
+      "atlasIndex": 58,
+      "type": "pagoda"
+    },
+    {
+      "heroId": 59,
+      "artifactName": "人参果树",
+      "atlasIndex": 59,
+      "type": "tree"
+    },
+    {
+      "heroId": 60,
+      "artifactName": "万寿拐",
+      "atlasIndex": 60,
+      "type": "staff"
+    },
+    {
+      "heroId": 61,
+      "artifactName": "雄黄宝伞",
+      "atlasIndex": 61,
+      "type": "umbrella"
+    },
+    {
+      "heroId": 62,
+      "artifactName": "轩辕剑",
+      "atlasIndex": 62,
+      "type": "blade"
+    },
+    {
+      "heroId": 63,
+      "artifactName": "虎魄战刃",
+      "atlasIndex": 63,
+      "type": "blade"
+    },
+    {
+      "heroId": 64,
+      "artifactName": "铁葫芦",
+      "atlasIndex": 64,
+      "type": "talisman"
+    },
+    {
+      "heroId": 65,
+      "artifactName": "纯阳剑",
+      "atlasIndex": 65,
+      "type": "blade"
+    },
+    {
+      "heroId": 66,
+      "artifactName": "荷花宝露",
+      "atlasIndex": 66,
+      "type": "talisman"
+    },
+    {
+      "heroId": 67,
+      "artifactName": "花篮",
+      "atlasIndex": 67,
+      "type": "talisman"
+    },
+    {
+      "heroId": 68,
+      "artifactName": "紫金箫",
+      "atlasIndex": 68,
+      "type": "lute"
+    },
+    {
+      "heroId": 69,
+      "artifactName": "阴阳板",
+      "atlasIndex": 69,
+      "type": "talisman"
+    },
+    {
+      "heroId": 70,
+      "artifactName": "渔鼓",
+      "atlasIndex": 70,
+      "type": "talisman"
+    },
+    {
+      "heroId": 71,
+      "artifactName": "芭蕉宝扇",
+      "atlasIndex": 71,
+      "type": "fan"
+    }
+  ],
+  "audit": {
+    "originalPainted": 36,
+    "specialPainted": 9,
+    "identitySpecificVector": 27,
+    "relicImages": 72,
+    "allHeroIDsUnique": true,
+    "assetReuseNote": "27 newer character portraits are vector illustrations, not full-resolution character paintings."
+  }
+}

@@ -1,6 +1,6 @@
-const CACHE='fengshen-tianming-72-v9.0';
+const CACHE='fengshen-tianming-72-v9.1';
 const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
-const ART=['./heroes-atlas.png','./heroes-atlas-2.png','./gear-atlas.png','./beast-atlas.svg','./relics-72.svg','./heroes-special-nine.jpg'];
+const ART=['./heroes-atlas.png','./heroes-atlas-2.png','./gear-atlas.png','./beast-atlas.svg','./relics-72.svg','./heroes-special-nine.jpg','./heroes-remaining-28.svg'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{
  const cache=await caches.open(CACHE);await cache.addAll(CORE);
  await Promise.allSettled(ART.map(async path=>{const response=await fetch(path);if(response.ok)await cache.put(path,response)}));
