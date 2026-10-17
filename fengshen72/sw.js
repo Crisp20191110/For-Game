@@ -1,4 +1,4 @@
-const CACHE='fengshen-tianming-72-v8.9.1';
+const CACHE='fengshen-tianming-72-v8.9.2';
 const CORE=['./','./index.html','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 const ART=['./heroes-atlas.png','./heroes-atlas-2.png','./gear-atlas.png','./beast-atlas.svg'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{
