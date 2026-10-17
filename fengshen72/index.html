@@ -3,7 +3,7 @@
 <meta name="description" content="七十二位东方神话神仙，五人组阵，三十星升星、法宝、装备、异兽、通天塔与战斗流派。离线单机可玩。"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-title" content="封神天命录"/><meta name="app-version" content="9.1.0"/>
+<meta name="apple-mobile-web-app-title" content="封神天命录"/><meta name="app-version" content="9.4.0"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png"/>
@@ -262,8 +262,8 @@ header{display:flex;flex-direction:column;align-items:stretch!important;gap:12px
 /* v8.7: ONE illustration system for deity, relic, equipment and beasts */
 .portrait-frame>.portrait.drawn,.portrait.ink.drawn{background:none!important}
 .object-art{display:block;position:relative;overflow:hidden;border:1px solid #e9c98b74;border-radius:10px;background-color:#102a32;box-shadow:inset 0 0 0 3px #111b2580,0 10px 25px #0004;flex-shrink:0}
-.relic-art{background-image:url('./gear-atlas.png');background-size:600% 400%;background-position:var(--sprite-x) var(--sprite-y)}
-.beast-illustration{background-image:url('./beast-atlas.svg');background-size:400% 300%;background-position:var(--sprite-x) var(--sprite-y)}
+.relic-art{background-image:url('./relics-v94.webp');background-size:800% 900%;background-position:var(--sprite-x) var(--sprite-y)}
+.beast-illustration{background-image:url('./beasts-v94.webp');background-size:400% 300%;background-position:var(--sprite-x) var(--sprite-y)}
 .object-art:after{content:'';position:absolute;inset:3px;pointer-events:none;border-radius:7px;border:1px solid #f5dbad59}
 .artifact-feature{display:flex;gap:16px;align-items:center;padding:15px 12px 20px;margin:12px 0;border-radius:14px;background:radial-gradient(circle at 10% 50%,#45695877,transparent 55%),linear-gradient(105deg,#263e47,#102831);border:1px solid #a88e5b8a}
 .relic-feature{width:43%;aspect-ratio:1;max-width:210px;border:2px solid #d6af70}
@@ -348,7 +348,7 @@ header .sub{letter-spacing:2px}
 /* v9.0: distinct audited painted deity portraits and 72 relic illustration slots. */
 .portrait.atlas-special{background-image:url('./heroes-special-nine.jpg')!important;background-size:300% 300%!important;background-repeat:no-repeat;image-rendering:auto}
 .portrait.atlas-special:before{display:none}
-.relic-art{background-image:url('./relics-72.svg')!important;background-size:800% 900%!important;background-repeat:no-repeat!important}
+.relic-art{background-image:url('./relics-v94.webp')!important;background-size:800% 900%!important;background-repeat:no-repeat!important}
 .relic-art .relic-name-mark{font-size:10px!important;background:#07191fcc!important;left:5px!important;right:5px!important;padding:4px 2px!important;border-radius:3px!important;line-height:1.15!important}
 .equipment-illustration{display:flex!important;align-items:center;justify-content:center;aspect-ratio:1!important;border:1px solid #bda170!important;background:radial-gradient(ellipse at 50% 35%,#53747a,#172f39 67%,#0d2029)!important;box-shadow:inset 0 0 0 5px #e4c4801a,0 0 28px #d4ae643b!important}
 .equipment-illustration span{font:65px Georgia,serif;color:#e7c785;text-shadow:0 1px 0 #fff5cc,0 8px 16px #0009}
@@ -358,10 +358,20 @@ header .sub{letter-spacing:2px}
 @media(max-width:390px){.relic-art .relic-name-mark{font-size:9px!important}}
 
 /* v9.1: art index is bound to hero.id, never roster sort position. */
-.portrait.atlas-remaining{background-image:url('./heroes-remaining-28.svg')!important;background-repeat:no-repeat!important;background-size:700% 400%!important;image-rendering:auto}
+.portrait.atlas-remaining-v94{background-image:url('./heroes-v94.webp')!important;background-repeat:no-repeat!important;background-size:900% 300%!important;image-rendering:auto}
 .portrait.atlas-remaining::before{display:none}
 @media(max-width:360px){.portrait.atlas-remaining .portrait-corner{font-size:8px}}
-</style></head><body><main class="app"><header><div><div class="brand"><span class="brand-seal">封</span><span>封神天命录</span></div><div class="sub">九霄万神 · 山海封神 <b>v9.1.0</b></div></div><div class="resource" id="res"></div></header><div id="main"></div></main><nav class="bottom" id="nav"></nav><div id="pop"></div><input id="fs-import" type="file" accept="application/json,.json" hidden/><script>
+
+.relic-entry .name,.beast .name{letter-spacing:1px}
+.beast .object-art,.relic-entry .object-art{box-shadow:0 8px 24px #0005,inset 0 0 0 1px #f0dcaf18}
+.beast-card-illustration,.beast-deployed,.relic-catalogue,.relic-feature{background-color:#12262f}
+
+/* v9.4 art-quality pass: a single canonical map across summon/gallery/details. */
+.portrait.atlas-remaining-v94{background-position:var(--art-x) var(--art-y)!important}
+.beast-card-illustration,.beast-deployed,.beast-detail-illustration{background-position:var(--sprite-x) var(--sprite-y)!important}
+.relic-entry .relic-catalogue,.relic-feature{background-position:var(--sprite-x) var(--sprite-y)!important}
+@media(max-width:390px){.beast-card-illustration,.relic-catalogue{border-radius:8px}}
+</style></head><body><main class="app"><header><div><div class="brand"><span class="brand-seal">封</span><span>封神天命录</span></div><div class="sub">九霄万神 · 山海封神 <b>v9.4.0</b></div></div><div class="resource" id="res"></div></header><div id="main"></div></main><nav class="bottom" id="nav"></nav><div id="pop"></div><input id="fs-import" type="file" accept="application/json,.json" hidden/><script>
 (()=>{'use strict';
 const lines=`女娲|神话|上古|灵医|🐉|山河社稷图|补天造化|heal|shield|仁心
 盘古|神话|上古|破军|🪓|开天神斧|开天辟地|aoe|break|巨力
@@ -475,7 +485,7 @@ function portrait(h,cls=''){const idx=HERO_ART_BY_ID[h.id];if(HEROS[h.id]!==h)th
  if(Number.isInteger(special))return `<span class="portrait art atlas-special ${cls}" data-hero-id="${h.id}" data-art-index="special-${special}" role="img" aria-label="${h.name}专属立绘" style="--art-x:${(special%3)*50}%;--art-y:${Math.floor(special/3)*50}%"><span class="portrait-corner">${h.camp.slice(0,1)} · ${h.role.slice(0,1)}</span></span>`;
 
  const original=REMAINING_ART_ID[h.id];
- if(Number.isInteger(original))return `<span class="portrait art atlas-remaining ${cls}" data-hero-id="${h.id}" data-art-index="remaining-${original}" role="img" aria-label="${h.name}专属角色绘卷" style="--art-x:${(original%7)*(100/6)}%;--art-y:${Math.floor(original/7)*(100/3)}%"><span class="portrait-corner">${h.camp.slice(0,1)} · ${h.role.slice(0,1)}</span></span>`;
+ if(Number.isInteger(original))return `<span class="portrait art atlas-remaining-v94 ${cls}" data-hero-id="${h.id}" data-art-index="remaining-${original}" role="img" aria-label="${h.name}角色立绘" style="--art-x:${(original%9)*(100/8)}%;--art-y:${Math.floor(original/9)*50}%"><span class="portrait-corner">${h.camp.slice(0,1)} · ${h.role.slice(0,1)}</span></span>`;
  if(Number.isInteger(idx))return `<span class="portrait art ${cls} atlas-${Math.floor(idx/36)}" data-hero-id="${h.id}" data-art-index="${idx}" role="img" aria-label="${h.name}立绘" style="--art-x:${idx%6*20}%;--art-y:${Math.floor((idx%36)/6)*20}%"><span class="portrait-corner">${h.camp.slice(0,1)} · ${h.role.slice(0,1)}</span></span>`;
  throw Error('立绘资源未分配：'+h.name);
 }
@@ -490,6 +500,7 @@ function beastArt(id,cls=''){if(id===null||id===undefined)return '<span class="b
  return `<span class="object-art beast-illustration ${cls}" role="img" aria-label="${BEASTS[id].name}异兽立绘" style="--sprite-x:${x}%;--sprite-y:${y}%"></span>`}
 
 
+const GAME_ART_VERSION='v9.4';
 const BEASTS=[['白泽','🦄','洞察天机','ward'],['应龙','🐲','苍龙降世','strike'],['九尾天狐','🦊','魅影迷踪','weaken'],['麒麟','🦌','瑞霭祥光','heal'],['朱雀','🦅','南明离火','burn'],['玄武','🐢','玄水守御','shield'],['青鸾','🕊️','青羽回春','heal'],['饕餮','🐲','吞天噬地','drain'],['毕方','🐦','赤炎燎原','burn'],['谛听','🐘','九幽谛听','energy'],['鲲鹏','🐋','扶摇九天','haste'],['九婴','🐍','九首毒浪','poison']].map(([name,icon,skill,kind],id)=>({name,icon,skill,kind,id}));
 const TYPES=['武器','仙衣','灵冠','玉佩'];const ICONS=['🗡️','🥋','👑','📿'];const PREFIX=['玄黄','九霄','太虚','瑶光','镇岳','玄冥','紫微','赤霄','灵犀','万象'];const AFFIX=['神锋','天衣','灵冠','玉璧'];const RANKS=['灵品','史诗','传说','神话'];const PATHS=[
  {id:'flame',icon:'🔥',name:'离火燃爆',members:['哪吒','祝融','红孩儿','通天教主','姜子牙'],desc:'先上灼烧，再以火法引爆；雷法命中灼烧触发过载。',counter:'被净化、护盾和冰封牵制。'},
@@ -593,7 +604,7 @@ function renderBattle(){const b=battle;
 function heroPicker(){let ids=Object.keys(S.units).map(Number).sort((a,b)=>power(b)-power(a));if(!S.units[selected])selected=ids[0];return `<div class="hscroll">${ids.map(id=>`<button class="minihero ${selected===id?'on':''}" data-act="selectHero" data-id="${id}">${smallPortrait(HEROS[id])}<div class="name">${HEROS[id].name}</div><div class="tiny">★${S.units[id].star}</div></button>`).join('')}</div>`}
 function renderHome(){let h=HEROS[selected],u=S.units[selected];if(!u){selected=Number(Object.keys(S.units)[0]);h=HEROS[selected];u=S.units[selected]}return `<div class="section"><h2>仙府秘藏</h2><small>本命法宝 · 四件仙装 · 异兽</small></div>${heroPicker()}<div class="filters">${[['artifact','🔱 本命法宝'],['relicGallery','◈ 万器法宝谱'],['gear','🛡️ 装备锻造'],['beasts','🐲 异兽洞天']].map(([id,s])=>`<button class="filter ${atab===id?'on':''}" data-act="tab" data-value="${id}">${s}</button>`).join('')}</div>${atab==='artifact'?renderArtifact(h,u):atab==='relicGallery'?renderRelicGallery():atab==='gear'?renderGear(h,u):renderBeasts()}`}
 function renderRelicGallery(){ensurePoolState();const ids=HEROS.map(h=>h.id).sort((a,b)=>(S.relicFragments[b]||0)-(S.relicFragments[a]||0)||a-b);
-return `<div class="section"><h2>万器法宝谱</h2><small>${Object.values(S.relicFragments).filter(n=>n>0).length}/72 已结缘</small></div><p class="footnote">72 件法宝已采用独立编号画面，与神将 ID 一一绑定。抽取同名残卷后，每5张可以代替一次法宝升级的灵材消耗。</p><div class="grid relic-gallery">${ids.map(id=>{const h=HEROS[id],frag=S.relicFragments[id]||0;return `<button class="relic-entry ${frag?'acquired':''}" data-act="relicDetail" data-id="${id}">${relicArt(id,'relic-catalogue')}<div class="name">${h.artifact}</div><div class="tiny">${h.name}</div><span>残卷 ${frag}</span></button>`}).join('')}</div>`}
+return `<div class="section"><h2>万器法宝谱</h2><small>${Object.values(S.relicFragments).filter(n=>n>0).length}/72 已结缘</small></div><p class="footnote">72 件法宝使用独立卡位，与神将 ID 一一绑定。部分法宝仍使用共享主题素材，正在逐件精绘。抽取同名残卷后，每 5 张可以代替一次法宝升级的灵材消耗。</p><div class="grid relic-gallery">${ids.map(id=>{const h=HEROS[id],frag=S.relicFragments[id]||0;return `<button class="relic-entry ${frag?'acquired':''}" data-act="relicDetail" data-id="${id}">${relicArt(id,'relic-catalogue')}<div class="name">${h.artifact}</div><div class="tiny">${h.name}</div><span>残卷 ${frag}</span></button>`}).join('')}</div>`}
 function renderArtifact(h,u){let lv=u.artifact;ensurePoolState();let fragments=S.relicFragments[h.id]||0;return `<div class="paper panel artifact-panel"><div class="spaced"><h2 class="artefact-heading">本命法宝</h2>${pill('神将专属 · 最高30阶')}</div><div class="artifact-feature">${relicArt(h.id,'relic-feature')}<div class="artifact-info"><span class="minor-gold">${h.camp} · ${h.role}</span><h2>${h.artifact}</h2><p>${h.name}本命仙器</p><span class="tier-badge">${lv?'已觉醒 · '+lv+'/30 阶':'尚未觉醒'}</span></div></div><p class="footnote">觉醒提升生命、攻击和神通强度。${h.artifact}残卷库存：<b class="golden">${fragments}</b>，每5张可抵扣一次升级灵材。</p><div class="statrow"><div class="stat"><strong>+${Math.round(lv*3.4)}%</strong><small>攻击</small></div><div class="stat"><strong>+${Math.round(lv*2.5)}%</strong><small>气血</small></div><div class="stat"><strong>${lv}/30</strong><small>法宝阶数</small></div></div>${btn(lv>=30?'法宝已圆满':`${lv?'淬炼升级':'觉醒法宝'} · ✨${16+lv*10} 灵材`,'upArtifact','primary',lv>=30?'disabled':'')}</div><div class="notice">灵材库存 ${S.dust} · 法宝归属神将本人，养成进度独立保存。</div>`}
 
 function daysKey(){return new Date().toLocaleDateString('en-CA')}
@@ -616,7 +627,7 @@ msg('每日仙缘：10抽、2000仙玉及养成资源已入库');render()}
 
 function claimMedal(name){let item=objectives().find(a=>a[0]===name);if(!item||!item[1]||(S.medals||[]).includes(name)){msg('成就尚未完成或已领取');return}S.medals=S.medals||[];S.medals.push(name);S.jade+=500;msg('成就奖励：仙玉+500');render()}
 function gearName(g){return PREFIX[g.seed%PREFIX.length]+AFFIX[g.slot]+' · '+RANKS[g.rarity-1]}function renderGear(h,u){return `<div class="paper panel"><div class="spaced"><h2 style="font-size:16px;margin:0">${h.name} · 随身仙装</h2>${pill('每位神将独立穿戴')}</div><div class="geargrid" style="margin-top:12px">${TYPES.map((type,i)=>{let g=S.gear.find(z=>z.id===u.gear[i]);return `<div class="gear gear-painted">${equipmentArt(i)}<strong>${type}</strong><p>${g?gearName(g)+'<br>强化 +'+g.level+' / 20':'尚未装备'}</p><div class="craft">${btn(g?'更换':'穿戴','chooseGear','small ghost',`data-slot="${i}"`)}${g?btn('强化','upGear','small',`data-slot="${i}"`):''}</div></div>`}).join('')}</div><div class="divider"></div><div class="spaced"><b>炼器炉</b><small class="muted">持有装备 ${S.gear.length} 件</small></div><p class="footnote">随机锻造一件仙装，可能获得灵品 / 史诗 / 传说 / 神话品质。每件装备最多强化至20级。</p>${btn('锻造仙装 · 🪙6,000','forge','primary')}${btn('查看装备背包','gearBag','ghost')}</div>`}
-function renderBeasts(){return `<div class="paper panel"><div class="spaced"><h2 style="font-size:16px;margin:0">双异兽护阵</h2>${pill('已收集 '+Object.keys(S.beasts).length+'/'+BEASTS.length)}</div><p class="footnote">异兽并非第六位神将，而是额外助战伙伴，最多同时上阵两只。异兽每两回合发动技能，且永久提升全队属性。</p><div class="geargrid">${[0,1].map(i=>{let id=S.beastLine[i];return `<div class="beast active"><div class="tiny">助阵位 ${i+1}</div>${beastArt(id,"beast-deployed")}<div class="name">${id!==null?BEASTS[id].name:'空位'}</div><div class="tiny">${id!==null?`Lv.${S.beasts[id].level} · ${BEASTS[id].skill}`:'暂无异兽'}</div></div>`}).join('')}</div><div class="actions">${btn('召来异兽 · 🐉100 精魄','beastDraw','primary')}${btn('一键最强异兽','autoBeast','ghost')}</div><div class="tiny" style="margin-top:8px">剩余异兽精魄 ${S.essence}</div></div><div class="section"><h2>异兽谱</h2></div><div class="grid">${BEASTS.map(b=>{let u=S.beasts[b.id];return `<button class="beast ${S.beastLine.includes(b.id)?'active':''} ${!u?'empty':''}" data-act="beastDetail" data-id="${b.id}">${beastArt(b.id,"beast-card-illustration")}<div class="name">${b.name}</div><div class="tiny">${u?`Lv.${u.level} · 碎片${u.shards}`:'未契约'}</div></button>`}).join('')}</div>`}
+function renderBeasts(){return `<div class="paper panel"><div class="spaced"><h2 style="font-size:16px;margin:0">双异兽护阵</h2>${pill('已收集 '+Object.keys(S.beasts).length+'/'+BEASTS.length)}</div><p class="footnote">12 只异兽使用固定编号的独立卡面，不再沿用旧图集里的重复画面。异兽并非第六位神将，而是额外助战伙伴，最多同时上阵两只；每两回合发动技能，并永久提升全队属性。</p><div class="geargrid">${[0,1].map(i=>{let id=S.beastLine[i];return `<div class="beast active"><div class="tiny">助阵位 ${i+1}</div>${beastArt(id,"beast-deployed")}<div class="name">${id!==null?BEASTS[id].name:'空位'}</div><div class="tiny">${id!==null?`Lv.${S.beasts[id].level} · ${BEASTS[id].skill}`:'暂无异兽'}</div></div>`}).join('')}</div><div class="actions">${btn('召来异兽 · 🐉100 精魄','beastDraw','primary')}${btn('一键最强异兽','autoBeast','ghost')}</div><div class="tiny" style="margin-top:8px">剩余异兽精魄 ${S.essence}</div></div><div class="section"><h2>异兽谱</h2></div><div class="grid">${BEASTS.map(b=>{let u=S.beasts[b.id];return `<button class="beast ${S.beastLine.includes(b.id)?'active':''} ${!u?'empty':''}" data-act="beastDetail" data-id="${b.id}">${beastArt(b.id,"beast-card-illustration")}<div class="name">${b.name}</div><div class="tiny">${u?`Lv.${u.level} · 碎片${u.shards}`:'未契约'}</div></button>`}).join('')}</div>`}
 function renderModal(){let out='';if(modal==='install'){
  out=`<div class="modal-head"><h2>📲 把游戏装进 iPhone</h2><button class="x" data-act="close">关闭 ✕</button></div>
  <div class="notice">① 用 Safari 打开游戏的网址，而不是“文件”App里的 HTML 预览。<br><br>② 点击 Safari 底部的 <b>分享</b> 图标。<br><br>③ 选择 <b>添加到主屏幕</b>。<br><br>④ 开启 <b>作为网页 App 打开</b>（如显示），再点击“添加”。<br><br>⑤ 返回主屏幕，点“封神天命录”图标进入游戏。首次加载完成后支持离线游玩。</div>

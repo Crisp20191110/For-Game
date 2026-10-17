@@ -1,0 +1,30 @@
+{
+  "version": "9.4.0",
+  "assets": {
+    "heroes": {
+      "count": 27,
+      "filename": "heroes-v94.webp",
+      "grid": [
+        9,
+        3
+      ]
+    },
+    "beasts": {
+      "count": 12,
+      "filename": "beasts-v94.webp",
+      "grid": [
+        4,
+        3
+      ]
+    },
+    "relics": {
+      "count": 72,
+      "filename": "relics-v94.webp",
+      "grid": [
+        8,
+        9
+      ]
+    }
+  },
+  "caveat": "Beast designs and some relics require further identity-specific art QA; 72 relic cells are not 72 independently commissioned paintings."
+}
