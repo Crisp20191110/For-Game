@@ -3,7 +3,7 @@
 <meta name="description" content="七十二位东方神话神仙，五人组阵，三十星升星、法宝、装备、异兽、通天塔与战斗流派。离线单机可玩。"/>
 <meta name="apple-mobile-web-app-capable" content="yes"/>
 <meta name="mobile-web-app-capable" content="yes"/>
-<meta name="apple-mobile-web-app-title" content="封神天命录"/><meta name="app-version" content="8.9.2"/>
+<meta name="apple-mobile-web-app-title" content="封神天命录"/><meta name="app-version" content="9.0.0"/>
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 <link rel="manifest" href="./manifest.webmanifest"/>
 <link rel="icon" type="image/png" sizes="192x192" href="./icon-192.png"/>
@@ -344,7 +344,19 @@ header .sub{letter-spacing:2px}
 .relic-view{text-align:center;padding:12px 3px 7px}.relic-view h2{font:700 23px 'Songti SC',serif;color:#f8db9c;margin:8px 0}.relic-view>p:not(.footnote){font-size:12px;color:#b2c6bd;margin:8px 0 16px}
 .relic-detail-art{width:min(66vw,230px)!important;max-width:230px;aspect-ratio:4/5;margin:auto;border:2px solid #c49b62;border-radius:8px}
 .relic-view .statrow{margin-top:18px}.relic-view .actions{margin-top:16px}
-</style></head><body><main class="app"><header><div><div class="brand"><span class="brand-seal">封</span><span>封神天命录</span></div><div class="sub">九霄万神 · 山海封神 <b>v8.9.1</b></div></div><div class="resource" id="res"></div></header><div id="main"></div></main><nav class="bottom" id="nav"></nav><div id="pop"></div><input id="fs-import" type="file" accept="application/json,.json" hidden/><script>
+
+/* v9.0: distinct audited painted deity portraits and 72 relic illustration slots. */
+.portrait.atlas-special{background-image:url('./heroes-special-nine.jpg')!important;background-size:300% 300%!important;background-repeat:no-repeat;image-rendering:auto}
+.portrait.atlas-special:before{display:none}
+.relic-art{background-image:url('./relics-72.svg')!important;background-size:800% 900%!important;background-repeat:no-repeat!important}
+.relic-art .relic-name-mark{font-size:10px!important;background:#07191fcc!important;left:5px!important;right:5px!important;padding:4px 2px!important;border-radius:3px!important;line-height:1.15!important}
+.equipment-illustration{display:flex!important;align-items:center;justify-content:center;aspect-ratio:1!important;border:1px solid #bda170!important;background:radial-gradient(ellipse at 50% 35%,#53747a,#172f39 67%,#0d2029)!important;box-shadow:inset 0 0 0 5px #e4c4801a,0 0 28px #d4ae643b!important}
+.equipment-illustration span{font:65px Georgia,serif;color:#e7c785;text-shadow:0 1px 0 #fff5cc,0 8px 16px #0009}
+.equipment-illustration.equip-1{background:radial-gradient(circle,#5b6174,#14242e 70%)!important}
+.equipment-illustration.equip-2{background:radial-gradient(circle,#73614a,#182b33 70%)!important}
+.equipment-illustration.equip-3{background:radial-gradient(circle,#56786c,#142a33 70%)!important}
+@media(max-width:390px){.relic-art .relic-name-mark{font-size:9px!important}}
+</style></head><body><main class="app"><header><div><div class="brand"><span class="brand-seal">封</span><span>封神天命录</span></div><div class="sub">九霄万神 · 山海封神 <b>v9.0.0</b></div></div><div class="resource" id="res"></div></header><div id="main"></div></main><nav class="bottom" id="nav"></nav><div id="pop"></div><input id="fs-import" type="file" accept="application/json,.json" hidden/><script>
 (()=>{'use strict';
 const lines=`女娲|神话|上古|灵医|🐉|山河社稷图|补天造化|heal|shield|仁心
 盘古|神话|上古|破军|🪓|开天神斧|开天辟地|aoe|break|巨力
@@ -421,6 +433,11 @@ const lines=`女娲|神话|上古|灵医|🐉|山河社稷图|补天造化|heal|
 const HEROS=lines.split('\n').map((row,id)=>{let [name,tier,camp,role,icon,artifact,skill,kind,fx,passive]=row.split('|');return{id,name,tier,camp,role,icon,artifact,skill,kind,fx,passive,base:({神话:170,传说:135,史诗:102,灵品:78})[tier],hp:({神话:1120,传说:930,史诗:760,灵品:610})[tier]}});
 const ART_LOOKUP={"吕洞宾":0,"巨灵神":1,"何仙姑":2,"罗宣":3,"夜游神":4,"韩湘子":5,"龙吉公主":6,"李靖":7,"麻姑":8,"太阴星君":9,"韦护":10,"雷震子":11,"黄帝":12,"应龙":13,"嫦娥":14,"朱雀":15,"钟馗":16,"太上老君":17,"张果老":18,"河伯":19,"玉兔":20,"赤脚大仙":21,"白无常":22,"铁扇公主":23,"白虎":24,"增长天王":25,"寿星":26,"文昌帝君":27,"黑无常":28,"孟婆":29,"哪吒":30,"杨戬":31,"龙女":32,"西王母":33,"斗姆元君":34,"孙悟空":35,"汉钟离":36,"曹国舅":37,"铁拐李":38,"蓝采和":39,"持国天王":40,"多闻天王":41,"姜子牙":42,"广成子":43,"玉鼎真人":44,"云中子":45,"元始天尊":46,"灵宝天尊":47,"吴刚":48,"日游神":49,"马面":50,"牛头":51,"月老":52,"雷公":53,"电母":54,"紫微大帝":55,"太乙救苦天尊":56,"酆都大帝":57,"后土":58,"玉皇大帝":59,"土地公":60,"灶神":61,"敖广":62,"玄武":63,"风伯":64,"雨师":65,"后羿":66,"精卫":67,"青龙":68,"神农":69,"女娲":70,"伏羲":71};
 const PAINTED_BACKUP={};
+// Approved, identity-specific newly painted panels; [hero ID] -> 3x3 atlas index.
+const SPECIAL_ART_ID=Object.freeze({1:0,3:1,4:2,6:3,7:4,12:5,15:6,18:7,19:8});
+const RELIC_ART_ID=Object.freeze(HEROS.map(h=>h.id));
+if(new Set(RELIC_ART_ID).size!==HEROS.length)throw Error('法宝立绘ID重复');
+
 const ART_ALIASES={'二郎神杨戬':'杨戬','二郎神':'杨戬','西王母娘娘':'西王母','王母娘娘':'西王母','神农氏':'神农','托塔李天王':'李靖','雷震子':'雷震子','后土娘娘':'后土','王母':'西王母'};
 // Self-contained illustrated shadow-puppet portraits. Each of the 39 heroes without painted portraits gets a distinct silhouette.
 // All artworks use the same minerals-and-ink palette and decorative card frame as the 33 original portraits.
@@ -439,14 +456,17 @@ const HERO_ART_BY_ID=Object.freeze(HEROS.map(h=>{const atlasName=ART_ALIASES[h.n
 const HERO_ART_DUPLICATES=HERO_ART_BY_ID.filter((x,i)=>x!==null&&HERO_ART_BY_ID.indexOf(x)!==i);
 if(HERO_ART_DUPLICATES.length)throw Error('角色立绘资源索引重复：'+HERO_ART_DUPLICATES.join(','));
 function portrait(h,cls=''){const idx=HERO_ART_BY_ID[h.id];if(HEROS[h.id]!==h)throw Error('神将身份与立绘索引不一致：'+h.id);
+ const special=SPECIAL_ART_ID[h.id];
+ if(Number.isInteger(special))return `<span class="portrait art atlas-special ${cls}" data-hero-id="${h.id}" data-art-index="special-${special}" role="img" aria-label="${h.name}专属立绘" style="--art-x:${(special%3)*50}%;--art-y:${Math.floor(special/3)*50}%"><span class="portrait-corner">${h.camp.slice(0,1)} · ${h.role.slice(0,1)}</span></span>`;
  if(Number.isInteger(idx))return `<span class="portrait art ${cls} atlas-${Math.floor(idx/36)}" data-hero-id="${h.id}" data-art-index="${idx}" role="img" aria-label="${h.name}立绘" style="--art-x:${idx%6*20}%;--art-y:${Math.floor((idx%36)/6)*20}%"><span class="portrait-corner">${h.camp.slice(0,1)} · ${h.role.slice(0,1)}</span></span>`;
- return `<span class="portrait ink drawn ${cls}" data-hero-id="${h.id}" data-art-index="original-${h.id}" role="img" aria-label="${h.name}神仙绘卷">${silhouetteArt(h)}<span class="portrait-corner">${h.camp.slice(0,1)} · ${h.role.slice(0,1)}</span></span>`;
+ return `<span class="portrait ink drawn ${cls}" data-hero-id="${h.id}" data-art-index="identity-${h.id}" role="img" aria-label="${h.name}待精绘角色绘卷">${silhouetteArt(h)}<span class="portrait-corner">${h.camp.slice(0,1)} · ${h.role.slice(0,1)}</span></span>`;
 }
 function smallPortrait(h){return portrait(h,'small-portrait')}
 // Unified painted item system: no emoji placeholders in cards or detail pages.
-function relicIndex(id,slot=0){return ((id*7+slot*11)%24+24)%24}
-function relicArt(id,cls='',slot=0){const k=relicIndex(id,slot),x=(k%6)*20,y=Math.floor(k/6)*(100/3);let h=HEROS[id],label=h?h.artifact:TYPES[slot]||'神兵';
- return `<span class="object-art relic-art ${cls}" role="img" aria-label="${label}法宝图像" style="--sprite-x:${x}%;--sprite-y:${y}%;--aura:${id%7}"><span class="relic-name-mark">${label}</span></span>`}
+function relicIndex(id){if(!Number.isInteger(id)||id<0||id>=HEROS.length)throw Error('法宝画面ID越界:'+id);return RELIC_ART_ID[id]}
+function relicArt(id,cls=''){const k=relicIndex(id),x=(k%8)*(100/7),y=Math.floor(k/8)*12.5,h=HEROS[id],label=h.artifact;
+ return `<span class="object-art relic-art ${cls}" data-hero-id="${id}" data-relic-id="${k}" role="img" aria-label="${h.name}本命法宝${label}" style="--sprite-x:${x}%;--sprite-y:${y}%"><span class="relic-name-mark">${label}</span></span>`}
+function equipmentArt(slot){const names=['武器','仙衣','灵冠','玉佩'],icons=['⚔','♜','♛','❖'];return `<span class="object-art equipment-illustration equip-${slot}" role="img" aria-label="${names[slot]}装备图案"><span>${icons[slot]}</span></span>`}
 function beastArt(id,cls=''){if(id===null||id===undefined)return '<span class="beast-vacant">◇</span>';
  const x=(id%4)*(100/3),y=Math.floor(id/4)*50;
  return `<span class="object-art beast-illustration ${cls}" role="img" aria-label="${BEASTS[id].name}异兽立绘" style="--sprite-x:${x}%;--sprite-y:${y}%"></span>`}
@@ -555,7 +575,7 @@ function renderBattle(){const b=battle;
 function heroPicker(){let ids=Object.keys(S.units).map(Number).sort((a,b)=>power(b)-power(a));if(!S.units[selected])selected=ids[0];return `<div class="hscroll">${ids.map(id=>`<button class="minihero ${selected===id?'on':''}" data-act="selectHero" data-id="${id}">${smallPortrait(HEROS[id])}<div class="name">${HEROS[id].name}</div><div class="tiny">★${S.units[id].star}</div></button>`).join('')}</div>`}
 function renderHome(){let h=HEROS[selected],u=S.units[selected];if(!u){selected=Number(Object.keys(S.units)[0]);h=HEROS[selected];u=S.units[selected]}return `<div class="section"><h2>仙府秘藏</h2><small>本命法宝 · 四件仙装 · 异兽</small></div>${heroPicker()}<div class="filters">${[['artifact','🔱 本命法宝'],['relicGallery','◈ 万器法宝谱'],['gear','🛡️ 装备锻造'],['beasts','🐲 异兽洞天']].map(([id,s])=>`<button class="filter ${atab===id?'on':''}" data-act="tab" data-value="${id}">${s}</button>`).join('')}</div>${atab==='artifact'?renderArtifact(h,u):atab==='relicGallery'?renderRelicGallery():atab==='gear'?renderGear(h,u):renderBeasts()}`}
 function renderRelicGallery(){ensurePoolState();const ids=HEROS.map(h=>h.id).sort((a,b)=>(S.relicFragments[b]||0)-(S.relicFragments[a]||0)||a-b);
-return `<div class="section"><h2>万器法宝谱</h2><small>${Object.values(S.relicFragments).filter(n=>n>0).length}/72 已结缘</small></div><p class="footnote">72 件本命法宝与神将 ID 一一绑定。抽取同名残卷后，每5张可以代替一次法宝升级的灵材消耗。</p><div class="grid relic-gallery">${ids.map(id=>{const h=HEROS[id],frag=S.relicFragments[id]||0;return `<button class="relic-entry ${frag?'acquired':''}" data-act="relicDetail" data-id="${id}">${relicArt(id,'relic-catalogue')}<div class="name">${h.artifact}</div><div class="tiny">${h.name}</div><span>残卷 ${frag}</span></button>`}).join('')}</div>`}
+return `<div class="section"><h2>万器法宝谱</h2><small>${Object.values(S.relicFragments).filter(n=>n>0).length}/72 已结缘</small></div><p class="footnote">72 件法宝已采用独立编号画面，与神将 ID 一一绑定。抽取同名残卷后，每5张可以代替一次法宝升级的灵材消耗。</p><div class="grid relic-gallery">${ids.map(id=>{const h=HEROS[id],frag=S.relicFragments[id]||0;return `<button class="relic-entry ${frag?'acquired':''}" data-act="relicDetail" data-id="${id}">${relicArt(id,'relic-catalogue')}<div class="name">${h.artifact}</div><div class="tiny">${h.name}</div><span>残卷 ${frag}</span></button>`}).join('')}</div>`}
 function renderArtifact(h,u){let lv=u.artifact;ensurePoolState();let fragments=S.relicFragments[h.id]||0;return `<div class="paper panel artifact-panel"><div class="spaced"><h2 class="artefact-heading">本命法宝</h2>${pill('神将专属 · 最高30阶')}</div><div class="artifact-feature">${relicArt(h.id,'relic-feature')}<div class="artifact-info"><span class="minor-gold">${h.camp} · ${h.role}</span><h2>${h.artifact}</h2><p>${h.name}本命仙器</p><span class="tier-badge">${lv?'已觉醒 · '+lv+'/30 阶':'尚未觉醒'}</span></div></div><p class="footnote">觉醒提升生命、攻击和神通强度。${h.artifact}残卷库存：<b class="golden">${fragments}</b>，每5张可抵扣一次升级灵材。</p><div class="statrow"><div class="stat"><strong>+${Math.round(lv*3.4)}%</strong><small>攻击</small></div><div class="stat"><strong>+${Math.round(lv*2.5)}%</strong><small>气血</small></div><div class="stat"><strong>${lv}/30</strong><small>法宝阶数</small></div></div>${btn(lv>=30?'法宝已圆满':`${lv?'淬炼升级':'觉醒法宝'} · ✨${16+lv*10} 灵材`,'upArtifact','primary',lv>=30?'disabled':'')}</div><div class="notice">灵材库存 ${S.dust} · 法宝归属神将本人，养成进度独立保存。</div>`}
 
 function daysKey(){return new Date().toLocaleDateString('en-CA')}
@@ -577,7 +597,7 @@ S.claimedDay=d;S.tickets+=10;S.jade+=2000;S.gold+=100000;S.spirit+=200;S.dust+=1
 msg('每日仙缘：10抽、2000仙玉及养成资源已入库');render()}
 
 function claimMedal(name){let item=objectives().find(a=>a[0]===name);if(!item||!item[1]||(S.medals||[]).includes(name)){msg('成就尚未完成或已领取');return}S.medals=S.medals||[];S.medals.push(name);S.jade+=500;msg('成就奖励：仙玉+500');render()}
-function gearName(g){return PREFIX[g.seed%PREFIX.length]+AFFIX[g.slot]+' · '+RANKS[g.rarity-1]}function renderGear(h,u){return `<div class="paper panel"><div class="spaced"><h2 style="font-size:16px;margin:0">${h.name} · 随身仙装</h2>${pill('每位神将独立穿戴')}</div><div class="geargrid" style="margin-top:12px">${TYPES.map((type,i)=>{let g=S.gear.find(z=>z.id===u.gear[i]);return `<div class="gear gear-painted">${relicArt(h.id,"relic-slot",i)}<strong>${type}</strong><p>${g?gearName(g)+'<br>强化 +'+g.level+' / 20':'尚未装备'}</p><div class="craft">${btn(g?'更换':'穿戴','chooseGear','small ghost',`data-slot="${i}"`)}${g?btn('强化','upGear','small',`data-slot="${i}"`):''}</div></div>`}).join('')}</div><div class="divider"></div><div class="spaced"><b>炼器炉</b><small class="muted">持有装备 ${S.gear.length} 件</small></div><p class="footnote">随机锻造一件仙装，可能获得灵品 / 史诗 / 传说 / 神话品质。每件装备最多强化至20级。</p>${btn('锻造仙装 · 🪙6,000','forge','primary')}${btn('查看装备背包','gearBag','ghost')}</div>`}
+function gearName(g){return PREFIX[g.seed%PREFIX.length]+AFFIX[g.slot]+' · '+RANKS[g.rarity-1]}function renderGear(h,u){return `<div class="paper panel"><div class="spaced"><h2 style="font-size:16px;margin:0">${h.name} · 随身仙装</h2>${pill('每位神将独立穿戴')}</div><div class="geargrid" style="margin-top:12px">${TYPES.map((type,i)=>{let g=S.gear.find(z=>z.id===u.gear[i]);return `<div class="gear gear-painted">${equipmentArt(i)}<strong>${type}</strong><p>${g?gearName(g)+'<br>强化 +'+g.level+' / 20':'尚未装备'}</p><div class="craft">${btn(g?'更换':'穿戴','chooseGear','small ghost',`data-slot="${i}"`)}${g?btn('强化','upGear','small',`data-slot="${i}"`):''}</div></div>`}).join('')}</div><div class="divider"></div><div class="spaced"><b>炼器炉</b><small class="muted">持有装备 ${S.gear.length} 件</small></div><p class="footnote">随机锻造一件仙装，可能获得灵品 / 史诗 / 传说 / 神话品质。每件装备最多强化至20级。</p>${btn('锻造仙装 · 🪙6,000','forge','primary')}${btn('查看装备背包','gearBag','ghost')}</div>`}
 function renderBeasts(){return `<div class="paper panel"><div class="spaced"><h2 style="font-size:16px;margin:0">双异兽护阵</h2>${pill('已收集 '+Object.keys(S.beasts).length+'/'+BEASTS.length)}</div><p class="footnote">异兽并非第六位神将，而是额外助战伙伴，最多同时上阵两只。异兽每两回合发动技能，且永久提升全队属性。</p><div class="geargrid">${[0,1].map(i=>{let id=S.beastLine[i];return `<div class="beast active"><div class="tiny">助阵位 ${i+1}</div>${beastArt(id,"beast-deployed")}<div class="name">${id!==null?BEASTS[id].name:'空位'}</div><div class="tiny">${id!==null?`Lv.${S.beasts[id].level} · ${BEASTS[id].skill}`:'暂无异兽'}</div></div>`}).join('')}</div><div class="actions">${btn('召来异兽 · 🐉100 精魄','beastDraw','primary')}${btn('一键最强异兽','autoBeast','ghost')}</div><div class="tiny" style="margin-top:8px">剩余异兽精魄 ${S.essence}</div></div><div class="section"><h2>异兽谱</h2></div><div class="grid">${BEASTS.map(b=>{let u=S.beasts[b.id];return `<button class="beast ${S.beastLine.includes(b.id)?'active':''} ${!u?'empty':''}" data-act="beastDetail" data-id="${b.id}">${beastArt(b.id,"beast-card-illustration")}<div class="name">${b.name}</div><div class="tiny">${u?`Lv.${u.level} · 碎片${u.shards}`:'未契约'}</div></button>`}).join('')}</div>`}
 function renderModal(){let out='';if(modal==='install'){
  out=`<div class="modal-head"><h2>📲 把游戏装进 iPhone</h2><button class="x" data-act="close">关闭 ✕</button></div>
