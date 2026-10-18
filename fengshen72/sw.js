@@ -1,5 +1,5 @@
-const CACHE='fengshen-tianming-72-v9.6';
-const CORE=['./','./index.html','./game-v96.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
+const CACHE='fengshen-tianming-72-v9.6.1';
+const CORE=['./','./index.html','./game-v961.js','./manifest.webmanifest','./icon.svg','./icon-192.png','./icon-512.png','./apple-touch-icon.png'];
 const ART=['./heroes-atlas.png','./heroes-atlas-2.png','./gear-atlas.png','./beast-atlas.svg','./relics-72.svg','./heroes-special-nine.jpg','./heroes-remaining-28.svg','./heroes-v94.webp','./beasts-v94.webp','./relics-v94.webp'];
 self.addEventListener('install',event=>event.waitUntil((async()=>{
  const cache=await caches.open(CACHE);await cache.addAll(CORE);
